@@ -1,3 +1,4 @@
+import 'package:budget_manager/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'pages/form_page.dart';
 void main() {
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FormPage(),
+      home: HomePage(),
     );
   }
 }
