@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-class AddCategory extends StatefulWidget {
-  const AddCategory({super.key});
+class AddCategoryPage extends StatefulWidget {
+  const AddCategoryPage({super.key});
 
   @override
-  State<AddCategory> createState() => _AddCategoryState();
+  State<AddCategoryPage> createState() => _AddCategoryPageState();
 }
 
-class _AddCategoryState extends State<AddCategory> {
+class _AddCategoryPageState extends State<AddCategoryPage> {
   final titleController = TextEditingController();
   @override
   Widget build(BuildContext context) {
