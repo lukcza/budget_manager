@@ -1,23 +1,40 @@
+import 'package:budget_manager/models/option.dart';
+import '../../models/option.dart';
 import 'package:flutter/material.dart';
-class AddOptionPage extends StatefulWidget {
-  AddOptionPage({super.key, required this.categoryTitle});
+
+class CategoryPage extends StatefulWidget {
+  CategoryPage({super.key, required this.categoryTitle});
   late String categoryTitle;
   @override
-  State<AddOptionPage> createState() => _AddOptionPageState();
+  State<CategoryPage> createState() => _CategoryPageState();
 }
 
-class _AddOptionPageState extends State<AddOptionPage> {
-  List<String> items =[];
+class _CategoryPageState extends State<CategoryPage> {
+  List<Option> items = [];
   void _addItem() {
-    TextEditingController controller = TextEditingController();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController amountController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(''),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(hintText: 'Wpisz nowy element'),
+        content: Expanded(
+          child: Column(
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(hintText: 'Wpisz nazwe opcji'),
+              ),
+              TextField(
+                keyboardType: TextInputType.number,
+                controller: amountController,
+                decoration: InputDecoration(
+                  hintText: 'Podaj przewidywaną kwote',
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -26,9 +43,13 @@ class _AddOptionPageState extends State<AddOptionPage> {
           ),
           TextButton(
             onPressed: () {
-              if (controller.text.isNotEmpty) {
+              if (nameController.text.isNotEmpty) {
                 setState(() {
-                  items.add(controller.text);
+                  items.add(Option(
+                      nameController.text,
+                      int.parse(amountController.value.text.isEmpty
+                          ? '0'
+                          : amountController.value.text)));
                 });
               }
               Navigator.pop(context);
@@ -39,6 +60,7 @@ class _AddOptionPageState extends State<AddOptionPage> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,17 +74,20 @@ class _AddOptionPageState extends State<AddOptionPage> {
             child: ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) => ListTile(
-                title: Text(items[index]),
+                title: Text(items[index].name),
+                subtitle: Text(items[index].amount.toString()),
+                trailing: Icon(
+                  Icons.remove_circle,
+                  color: Colors.red,
+                ),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8),
-            child: ElevatedButton(onPressed: _addItem, child: Text("dodaj"))
-          )
+              padding: const EdgeInsets.all(8),
+              child: ElevatedButton(onPressed: _addItem, child: Text("dodaj")))
         ],
       ),
     );
   }
 }
-

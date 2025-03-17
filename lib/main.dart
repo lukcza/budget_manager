@@ -10,7 +10,7 @@ void main() {
 }
 final _router = GoRouter(
     routes: [
-      GoRoute(path: '/', builder: (context,state)=>Reciptscanner()),
+      GoRoute(path: '/', builder: (context,state)=>CategoryPage(categoryTitle: "fiufiu")),
       GoRoute(path: '/add_category', builder: (context,state)=>AddCategoryPage()),
       GoRoute(path: '/add_payment', builder: (context,state)=>AddPayment()),
 //GoRoute(path: '/stats', builder: (context,state)=>Stats()),
