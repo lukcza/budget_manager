@@ -14,7 +14,7 @@ class _AddOptionPageState extends State<AddOptionPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Dodaj nowy element'),
+        title: Text(''),
         content: TextField(
           controller: controller,
           decoration: InputDecoration(hintText: 'Wpisz nowy element'),
