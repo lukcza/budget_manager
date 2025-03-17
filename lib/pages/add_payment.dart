@@ -11,10 +11,10 @@ final List<DropdownMenuEntry<String>> dropdownItems = [
   DropdownMenuEntry(value: '3', label: 'Opcja 3'),
 ];
 class _AddPaymentState extends State<AddPayment> {
-  @override
   String? selectedValue;
   final amountController = TextEditingController();
   final descriptionController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
