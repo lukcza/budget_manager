@@ -1,10 +1,12 @@
 import 'package:budget_manager/models/option.dart';
+import 'package:go_router/go_router.dart';
 import '../../models/option.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CategoryPage extends StatefulWidget {
   CategoryPage({super.key, required this.categoryTitle});
-  late String categoryTitle;
+  String categoryTitle;
   @override
   State<CategoryPage> createState() => _CategoryPageState();
 }
@@ -18,23 +20,23 @@ class _CategoryPageState extends State<CategoryPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(''),
-        content: Expanded(
-          child: Column(
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(hintText: 'Wpisz nazwe opcji'),
+
+        title: Center(child: Text('Dodaj opcje')),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(hintText: 'Wpisz nazwe opcji'),
+            ),
+            TextField(
+              keyboardType: TextInputType.number,
+              controller: amountController,
+              decoration: InputDecoration(
+                hintText: 'Podaj przewidywaną kwote',
               ),
-              TextField(
-                keyboardType: TextInputType.number,
-                controller: amountController,
-                decoration: InputDecoration(
-                  hintText: 'Podaj przewidywaną kwote',
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
         actions: [
           TextButton(
@@ -76,16 +78,33 @@ class _CategoryPageState extends State<CategoryPage> {
               itemBuilder: (context, index) => ListTile(
                 title: Text(items[index].name),
                 subtitle: Text(items[index].amount.toString()),
-                trailing: Icon(
-                  Icons.remove_circle,
-                  color: Colors.red,
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.remove_circle,
+                    color: Colors.red,
+                  ),
+                  onPressed: () => {
+                    setState(() {
+                      items.removeAt(index);
+                    })
+                  },
                 ),
               ),
             ),
           ),
           Padding(
               padding: const EdgeInsets.all(8),
-              child: ElevatedButton(onPressed: _addItem, child: Text("dodaj")))
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ElevatedButton(
+                      onPressed: () => context.pop(), child: Text("wroc")),
+                  ElevatedButton(onPressed: _addItem, child: Text("dodaj")),
+                  ElevatedButton(
+                      onPressed: () => context.pop(), child: Text("zapisz")),
+                ],
+              ))
         ],
       ),
     );
