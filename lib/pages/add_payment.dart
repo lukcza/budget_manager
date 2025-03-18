@@ -17,27 +17,37 @@ class _AddPaymentState extends State<AddPayment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          DropdownMenu(
-              initialSelection: dropdownItems.first.value,
-              onSelected: (String? value) {
-                setState(() {
-                  selectedValue = value;
-                });
-              },
-              dropdownMenuEntries: dropdownItems),
-          TextField(
-            keyboardType: TextInputType.number,
-            controller: amountController,
-          ),
-          TextField(
-            keyboardType: TextInputType.text,
-          ),
-          ElevatedButton(
-              onPressed: ()=>print("payment send"),
-              child: Text("send"))
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            DropdownMenu(
+                initialSelection: dropdownItems.first.value,
+                onSelected: (String? value) {
+                  setState(() {
+                    selectedValue = value;
+                  });
+                },
+                dropdownMenuEntries: dropdownItems),
+            DropdownMenu(
+                initialSelection: dropdownItems.first.value,
+                onSelected: (String? value) {
+                  setState(() {
+                    selectedValue = value;
+                  });
+                },
+                dropdownMenuEntries: dropdownItems),
+            TextField(
+              keyboardType: TextInputType.number,
+              controller: amountController,
+            ),
+            TextField(
+              keyboardType: TextInputType.text,
+            ),
+            ElevatedButton(
+                onPressed: ()=>print("payment send"),
+                child: Text("send"))
+          ],
+        ),
       ),
     );
   }

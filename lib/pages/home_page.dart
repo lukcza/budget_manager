@@ -1,32 +1,35 @@
+import 'package:budget_manager/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  const HomePage({super.key, required this.currentMonthId});
+  final int currentMonthId;
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  String? monthName;
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    _loadMonthName();
+    // TODO: implement initState
+    super.initState();
+  }
+  Future<void> _loadMonthName() async {
+    String? name = await DatabseService.instance.getMonthNameById(widget.currentMonthId);
+    setState(() {
+      monthName = name ?? "Brak danych";
+    });
+  }
+  @override
+  Widget build(BuildContext context)  {
     return Scaffold(
+      appBar: AppBar(title: Text(monthName?? "Ładowanie..."),),
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: Text(
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
-                    getCurrentMonth()),
-              ),
-            ),
             Expanded(
                 child: Row(
               children: [
@@ -59,20 +62,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-String getCurrentMonth() {
-  DateTime now = DateTime.now();
-  List<String> monthNames = [
-    "Styczen",
-    "Luty",
-    "Marzec",
-    "Kwiecień",
-    "Maj",
-    "Czerwiec",
-    "Wrzesień",
-    " Sierpień",
-    "Październik",
-    "Listopad",
-    "Grudzień"
-  ];
-  return monthNames[now.month - 1];
-}

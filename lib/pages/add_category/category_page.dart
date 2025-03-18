@@ -16,6 +16,7 @@ class _CategoryPageState extends State<CategoryPage> {
   void _addItem() {
     TextEditingController nameController = TextEditingController();
     TextEditingController amountController = TextEditingController();
+    TextEditingController inncomeAmountController = TextEditingController();
 
     showDialog(
       context: context,
@@ -36,6 +37,13 @@ class _CategoryPageState extends State<CategoryPage> {
                 hintText: 'Podaj przewidywaną kwote',
               ),
             ),
+            TextField(
+              keyboardType: TextInputType.number,
+              controller: inncomeAmountController,
+              decoration: InputDecoration(
+                hintText: 'Podaj juz wydaną kwote',
+              ),
+            ),
           ],
         ),
         actions: [
@@ -51,7 +59,10 @@ class _CategoryPageState extends State<CategoryPage> {
                       nameController.text,
                       int.parse(amountController.value.text.isEmpty
                           ? '0'
-                          : amountController.value.text)));
+                          : amountController.value.text),
+                      int.parse(inncomeAmountController.value.text.isEmpty
+                      ? '0'
+                      : inncomeAmountController.value.text)));
                 });
               }
               Navigator.pop(context);
@@ -77,7 +88,7 @@ class _CategoryPageState extends State<CategoryPage> {
               itemCount: items.length,
               itemBuilder: (context, index) => ListTile(
                 title: Text(items[index].name),
-                subtitle: Text(items[index].amount.toString()),
+                subtitle: Text("Limit: "+items[index].amount.toString()+" Wydane: "+ items[index].incomeAmount.toString()),
                 trailing: IconButton(
                   icon: Icon(
                     Icons.remove_circle,
@@ -98,11 +109,9 @@ class _CategoryPageState extends State<CategoryPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  ElevatedButton(
-                      onPressed: () => context.pop(), child: Text("wroc")),
+                  ElevatedButton(onPressed: () => context.pop(), child: Text("wroc")),
                   ElevatedButton(onPressed: _addItem, child: Text("dodaj")),
-                  ElevatedButton(
-                      onPressed: () => context.pop(), child: Text("zapisz")),
+                  ElevatedButton(onPressed: () => context.pop(), child: Text("zapisz")),
                 ],
               ))
         ],
