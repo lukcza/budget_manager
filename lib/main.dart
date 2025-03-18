@@ -12,14 +12,6 @@ Future<void> main() async {
   int currentMonthId = await DatabseService.instance.ensureCurrentMonth();
   runApp( MyApp(currentMonthId: currentMonthId,));
 }
-final _router = GoRouter(
-    routes: [
-      GoRoute(path: '/', builder: (context,state)=>CategoryPage(categoryTitle: "ddd")),
-      GoRoute(path: '/add_category', builder: (context,state)=>AddCategoryPage()),
-      GoRoute(path: '/add_payment', builder: (context,state)=>AddPayment()),
-//GoRoute(path: '/stats', builder: (context,state)=>Stats()),
-    ],
-);
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, required this.currentMonthId}) : super(key: key);
   final int currentMonthId;
@@ -30,7 +22,7 @@ class MyApp extends StatelessWidget {
         initialLocation: '/',
         routes: [
           GoRoute(path: '/', builder: (context,state)=>HomePage(currentMonthId: this.currentMonthId,)),
-          GoRoute(path: '/add_category', builder: (context,state)=>AddCategoryPage()),
+          GoRoute(path: '/add_category', builder: (context,state)=>AddCategoryPage(currentMonthId: this.currentMonthId,)),
           GoRoute(path: '/add_payment', builder: (context,state)=>AddPayment()),
           //GoRoute(path: '/stats', builder: (context,state)=>Stats()),
         ],

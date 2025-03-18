@@ -14,7 +14,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _loadMonthName();
-    // TODO: implement initState
     super.initState();
   }
   Future<void> _loadMonthName() async {
