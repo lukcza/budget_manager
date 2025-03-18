@@ -2,6 +2,7 @@ import 'package:budget_manager/pages/add_category/add_category_page.dart';
 import 'package:budget_manager/pages/add_category/category_page.dart';
 import 'package:budget_manager/pages/add_payment.dart';
 import 'package:budget_manager/pages/home_page.dart';
+import 'package:budget_manager/pages/month_page/month_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'services/database_service.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: GoRouter(
-        initialLocation: '/',
+        initialLocation: '/month_page',
         routes: [
           GoRoute(
               path: '/',
@@ -30,19 +31,20 @@ class MyApp extends StatelessWidget {
                     currentMonthId: this.currentMonthId,
                   )),
           GoRoute(
-              path: '/add_category/:',
+              path: '/add_category',
               builder: (context, state) => AddCategoryPage(
                     currentMonthId: this.currentMonthId,
                   )),
           GoRoute(
-              path: '/add_category/:categoryId/:categoryName',
+              path: '/add_option/:categoryId/:categoryName',
               builder: (context, state) {
                 final categoryTitle = state.pathParameters['categoryName'];
-                final categoryId = state.pathParameters['categoryId'] as int;
+                final categoryId = int.parse(state.pathParameters['categoryId']!);
                 return  CategoryPage(categoryTitle: categoryTitle!, categoryId: categoryId,);
               }),
           GoRoute(
               path: '/add_payment', builder: (context, state) => AddPayment()),
+          GoRoute(path: '/month_page',builder: (context,state) =>MonthPage(monthId: currentMonthId,))
           //GoRoute(path: '/stats', builder: (context,state)=>Stats()),
         ],
       ),

@@ -55,7 +55,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                         categoryId = await DatabseService.instance
                             .getCategoryId(titleController.value.text),
                         categoryName = titleController.text,
-                        context.go(
+                        context.push(
                           '/add_option/$categoryId/$categoryName',
                         )
                       },

@@ -39,8 +39,7 @@ class DatabseService {
         total_planned_expenses $doubleType,
         total_actual_expenses $doubleType
       )
-    '''
-    );
+    ''');
 
     await db.execute('''
       CREATE TABLE categories (
@@ -49,8 +48,7 @@ class DatabseService {
         name $textType,
         FOREIGN KEY (month_id) REFERENCES months (id) ON DELETE CASCADE
       )
-    '''
-    );
+    ''');
 
     await db.execute('''
       CREATE TABLE options (
@@ -61,8 +59,7 @@ class DatabseService {
         actual_cost $doubleType,
         FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
       )
-    '''
-    );
+    ''');
   }
 
   Future<int> insert(String table, Map<String, dynamic> data) async {
@@ -90,7 +87,23 @@ class DatabseService {
     db.close();
   }
 
-  Future<int> createOption(int categoryId,String name,double plannedCost, double actualCost) async {
+  Future<List<Map<String, dynamic>>> getCategoriesForMonth(int monthId) async {
+    final db = await instance.database;
+    try {
+      final List<Map<String, dynamic>> categories = await db.query(
+        'categories',
+        where: 'month_id = ?',
+        whereArgs: [monthId],
+      );
+      return categories;
+    } catch (e) {
+      print('Error fetching categories: $e');
+      return [];
+    }
+  }
+
+  Future<int> createOption(int categoryId, String name, double plannedCost,
+      double actualCost) async {
     final db = await instance.database;
     return await db.insert('options', {
       'category_id': categoryId,
@@ -99,6 +112,7 @@ class DatabseService {
       'actual_cost': actualCost,
     });
   }
+
   Future<int> createCategory(int monthId, String categoryName) async {
     final db = await instance.database;
     return await db.insert('categories', {
@@ -106,7 +120,8 @@ class DatabseService {
       'name': categoryName,
     });
   }
-  Future<int?>getCategoryId( String categoryName) async{
+
+  Future<int?> getCategoryId(String categoryName) async {
     final db = await instance.database;
     final result = await db.query(
       'categories',
@@ -114,9 +129,9 @@ class DatabseService {
       where: 'name = ?',
       whereArgs: [categoryName],
     );
-    if(result.isNotEmpty){
+    if (result.isNotEmpty) {
       return result.first['id'] as int;
-    }else{
+    } else {
       return null;
     }
   }
@@ -147,6 +162,7 @@ class DatabseService {
       return result.first['id'] as int;
     }
   }
+
   Future<String?> getMonthNameById(int monthId) async {
     final db = await instance.database;
     final result = await db.query(

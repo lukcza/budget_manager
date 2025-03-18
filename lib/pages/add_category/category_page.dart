@@ -78,7 +78,7 @@ class _CategoryPageState extends State<CategoryPage> {
       await DatabseService.instance.createOption(
           widget.categoryId, item.name, item.plannedCost, item.actualCost);
     }
-    showDialog(
+    await showDialog(
         context: context,
         builder:(BuildContext context)=>
             AlertDialog(
@@ -86,7 +86,7 @@ class _CategoryPageState extends State<CategoryPage> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    this.context.pop();// Zamknięcie dialogu
+                    Navigator.of(context).pop();// Zamknięcie dialogu
                   },
                   child: Text('TAK'),
                 ),
@@ -98,6 +98,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ],
             ));
+    context.go('/');
+
   }
 
   @override
