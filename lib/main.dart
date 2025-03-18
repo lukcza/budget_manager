@@ -2,7 +2,6 @@ import 'package:budget_manager/pages/add_category/add_category_page.dart';
 import 'package:budget_manager/pages/add_category/category_page.dart';
 import 'package:budget_manager/pages/add_payment.dart';
 import 'package:budget_manager/pages/home_page.dart';
-import 'package:budget_manager/pages/recipt_scanner_page/ReciptScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'services/database_service.dart';

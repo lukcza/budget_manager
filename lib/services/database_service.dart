@@ -90,6 +90,15 @@ class DatabseService {
     db.close();
   }
 
+  Future<int> createOption(int categoryId,String name,double plannedCost, double actualCost) async {
+    final db = await instance.database;
+    return await db.insert('options', {
+      'category_id': categoryId,
+      'name': name,
+      'planned_cost': plannedCost,
+      'actual_cost': actualCost,
+    });
+  }
   Future<int> createCategory(int monthId, String categoryName) async {
     final db = await instance.database;
     return await db.insert('categories', {

@@ -1,11 +1,11 @@
 import 'package:budget_manager/models/option.dart';
+import 'package:budget_manager/services/database_service.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/option.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class CategoryPage extends StatefulWidget {
-  CategoryPage({super.key, required this.categoryTitle, required this.categoryId});
+  CategoryPage(
+      {super.key, required this.categoryTitle, required this.categoryId});
   String categoryTitle;
   int categoryId;
   @override
@@ -16,13 +16,11 @@ class _CategoryPageState extends State<CategoryPage> {
   List<Option> items = [];
   void _addItem() {
     TextEditingController nameController = TextEditingController();
-    TextEditingController amountController = TextEditingController();
-    TextEditingController inncomeAmountController = TextEditingController();
-
+    TextEditingController plannedCostController = TextEditingController();
+    TextEditingController actualCostController = TextEditingController();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-
         title: Center(child: Text('Dodaj opcje')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -33,14 +31,14 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
             TextField(
               keyboardType: TextInputType.number,
-              controller: amountController,
+              controller: plannedCostController,
               decoration: InputDecoration(
                 hintText: 'Podaj przewidywaną kwote',
               ),
             ),
             TextField(
               keyboardType: TextInputType.number,
-              controller: inncomeAmountController,
+              controller: actualCostController,
               decoration: InputDecoration(
                 hintText: 'Podaj juz wydaną kwote',
               ),
@@ -58,12 +56,12 @@ class _CategoryPageState extends State<CategoryPage> {
                 setState(() {
                   items.add(Option(
                       nameController.text,
-                      int.parse(amountController.value.text.isEmpty
+                      double.parse(plannedCostController.value.text.isEmpty
                           ? '0'
-                          : amountController.value.text),
-                      int.parse(inncomeAmountController.value.text.isEmpty
-                      ? '0'
-                      : inncomeAmountController.value.text)));
+                          : plannedCostController.value.text),
+                      double.parse(actualCostController.value.text.isEmpty
+                          ? '0'
+                          : actualCostController.value.text)));
                 });
               }
               Navigator.pop(context);
@@ -73,6 +71,33 @@ class _CategoryPageState extends State<CategoryPage> {
         ],
       ),
     );
+  }
+
+  void _addAllOptions() async {
+    for (var item in items) {
+      await DatabseService.instance.createOption(
+          widget.categoryId, item.name, item.plannedCost, item.actualCost);
+    }
+    showDialog(
+        context: context,
+        builder:(BuildContext context)=>
+            AlertDialog(
+              content: Text("Czy napewno chcesz dodać te opcje?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    this.context.pop();// Zamknięcie dialogu
+                  },
+                  child: Text('TAK'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Zamknięcie dialogu
+                  },
+                  child: Text('NIE'),
+                ),
+              ],
+            ));
   }
 
   @override
@@ -89,7 +114,10 @@ class _CategoryPageState extends State<CategoryPage> {
               itemCount: items.length,
               itemBuilder: (context, index) => ListTile(
                 title: Text(items[index].name),
-                subtitle: Text("Limit: "+items[index].amount.toString()+" Wydane: "+ items[index].incomeAmount.toString()),
+                subtitle: Text("Limit: " +
+                    items[index].plannedCost.toString() +
+                    " Wydane: " +
+                    items[index].actualCost.toString()),
                 trailing: IconButton(
                   icon: Icon(
                     Icons.remove_circle,
@@ -110,9 +138,14 @@ class _CategoryPageState extends State<CategoryPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  ElevatedButton(onPressed: () => context.pop(), child: Text("wroc")),
+                  ElevatedButton(
+                      onPressed: (){
+                        items = [];
+                        context.pop();
+                      }, child: Text("wroc")),
                   ElevatedButton(onPressed: _addItem, child: Text("dodaj")),
-                  ElevatedButton(onPressed: () => context.pop(), child: Text("zapisz")),
+                  ElevatedButton(
+                      onPressed: () => _addAllOptions(), child: Text("zapisz")),
                 ],
               ))
         ],
