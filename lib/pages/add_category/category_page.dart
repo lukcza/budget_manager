@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CategoryPage extends StatefulWidget {
-  CategoryPage({super.key, required this.categoryTitle});
+  CategoryPage({super.key, required this.categoryTitle, required this.categoryId});
   String categoryTitle;
+  int categoryId;
   @override
   State<CategoryPage> createState() => _CategoryPageState();
 }

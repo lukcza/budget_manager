@@ -97,6 +97,20 @@ class DatabseService {
       'name': categoryName,
     });
   }
+  Future<int?>getCategoryId( String categoryName) async{
+    final db = await instance.database;
+    final result = await db.query(
+      'categories',
+      columns: ['id'],
+      where: 'name = ?',
+      whereArgs: [categoryName],
+    );
+    if(result.isNotEmpty){
+      return result.first['id'] as int;
+    }else{
+      return null;
+    }
+  }
 
   Future<int> ensureCurrentMonth() async {
     final db = await instance.database;
