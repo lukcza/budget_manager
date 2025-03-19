@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
   Future<void> _loadMonthName() async {
-    String? name = await DatabseService.instance.getMonthNameById(widget.currentMonthId);
+    String? name = await DatabaseService.instance.getMonthNameById(widget.currentMonthId);
     setState(() {
       monthName = name ?? "Brak danych";
     });
@@ -41,7 +41,11 @@ class _HomePageState extends State<HomePage> {
                     flex: 1,
                     child: OutlinedButton(
                         onPressed: () => context.go('/add_payment'),
-                        child: Text("dodaj platnosc"))),
+                        child: Text("dodaj platnosc"))),Expanded(
+                    flex: 1,
+                    child: OutlinedButton(
+                        onPressed: () => context.go('/month_page'),
+                        child: Text("miesiac"))),
               ],
             )),
             Expanded(

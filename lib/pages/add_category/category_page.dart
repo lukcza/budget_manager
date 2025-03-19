@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:budget_manager/models/option.dart';
 import 'package:budget_manager/services/database_service.dart';
 import 'package:go_router/go_router.dart';
@@ -54,12 +56,12 @@ class _CategoryPageState extends State<CategoryPage> {
             onPressed: () {
               if (nameController.text.isNotEmpty) {
                 setState(() {
-                  items.add(Option(
-                      nameController.text,
-                      double.parse(plannedCostController.value.text.isEmpty
+                  items.add(Option(categoryId: widget.categoryId,
+                      name:nameController.text,
+                      plannedCost: double.parse(plannedCostController.value.text.isEmpty
                           ? '0'
                           : plannedCostController.value.text),
-                      double.parse(actualCostController.value.text.isEmpty
+                      actualCost: double.parse(actualCostController.value.text.isEmpty
                           ? '0'
                           : actualCostController.value.text)));
                 });
@@ -75,7 +77,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void _addAllOptions() async {
     for (var item in items) {
-      await DatabseService.instance.createOption(
+      await DatabaseService.instance.createOption(
           widget.categoryId, item.name, item.plannedCost, item.actualCost);
     }
     await showDialog(

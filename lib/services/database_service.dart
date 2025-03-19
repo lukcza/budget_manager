@@ -2,11 +2,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:intl/intl.dart';
 
-class DatabseService {
-  static final DatabseService instance = DatabseService._init();
+class DatabaseService {
+  static final DatabaseService instance = DatabaseService._init();
   static Database? _database;
 
-  DatabseService._init();
+  DatabaseService._init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -136,7 +136,7 @@ class DatabseService {
     }
   }
 
-  Future<int> ensureCurrentMonth() async {
+  /*Future<int> ensureCurrentMonth() async {
     final db = await instance.database;
     String currentMonth = DateFormat('MMMM yyyy').format(DateTime.now());
 
@@ -161,7 +161,7 @@ class DatabseService {
     } else {
       return result.first['id'] as int;
     }
-  }
+  }*/
 
   Future<String?> getMonthNameById(int monthId) async {
     final db = await instance.database;

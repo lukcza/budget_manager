@@ -1,3 +1,4 @@
+import 'package:budget_manager/models/month.dart';
 import 'package:budget_manager/pages/add_category/add_category_page.dart';
 import 'package:budget_manager/pages/add_category/category_page.dart';
 import 'package:budget_manager/pages/add_payment.dart';
@@ -10,20 +11,20 @@ import 'services/database_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  int currentMonthId = await DatabseService.instance.ensureCurrentMonth();
+  int currentMonthId = await Month.ensureCurrentMonth();
   runApp(MyApp(
     currentMonthId: currentMonthId,
   ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.currentMonthId}) : super(key: key);
+  MyApp({super.key, required this.currentMonthId});
   final int currentMonthId;
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: GoRouter(
-        initialLocation: '/month_page',
+        initialLocation: '/',
         routes: [
           GoRoute(
               path: '/',
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
               }),
           GoRoute(
               path: '/add_payment', builder: (context, state) => AddPayment()),
-          GoRoute(path: '/month_page',builder: (context,state) =>MonthPage(monthId: currentMonthId,))
+          GoRoute(path: '/month_page',builder: (context,state) =>MonthPage(currentMonthId: currentMonthId,))
           //GoRoute(path: '/stats', builder: (context,state)=>Stats()),
         ],
       ),

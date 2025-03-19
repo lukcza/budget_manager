@@ -1,3 +1,4 @@
+import 'package:budget_manager/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/database_service.dart';
@@ -24,7 +25,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
   Future<void> _loadMonthName() async {
     String? name =
-        await DatabseService.instance.getMonthNameById(widget.currentMonthId);
+        await DatabaseService.instance.getMonthNameById(widget.currentMonthId);
     setState(() {
       monthName = name ?? "Brak danych";
     });
@@ -34,6 +35,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   Widget build(BuildContext context) {
     int? categoryId;
     String categoryName;
+    Category category1;
     return Scaffold(
       appBar: AppBar(
         title: Text(monthName ?? "Ładowanie"),
@@ -50,10 +52,11 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               ),
               ElevatedButton(
                   onPressed: () async => {
-                        await DatabseService.instance.createCategory(
-                            widget.currentMonthId, titleController.value.text),
-                        categoryId = await DatabseService.instance
-                            .getCategoryId(titleController.value.text),
+                        category1 = Category(
+                            monthId: widget.currentMonthId,
+                            name: titleController.value.text),
+                        category1.save(),
+                        categoryId = await category1.getCategoryId(),
                         categoryName = titleController.text,
                         context.push(
                           '/add_option/$categoryId/$categoryName',
