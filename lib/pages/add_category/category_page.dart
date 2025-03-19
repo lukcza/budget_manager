@@ -77,8 +77,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void _addAllOptions() async {
     for (var item in items) {
-      await DatabaseService.instance.createOption(
-          widget.categoryId, item.name, item.plannedCost, item.actualCost);
+      item.save();
     }
     await showDialog(
         context: context,

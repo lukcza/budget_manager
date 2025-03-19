@@ -37,9 +37,9 @@ class _MonthPageState extends State<MonthPage> {
     }
   }
 
-  /*void removeItem(int index) {
-    final removedItem = listOfCategories[index];
-    listOfCategories.removeAt(index);
+  void removeItem(int index, List<Category> categoriesList) {
+    final removedItem = categoriesList[index];
+    categoriesList.removeAt(index);
     categoryListKey.currentState!.removeItem(
         index,
         (context, animation) => ListItemCategoryWidget(
@@ -47,7 +47,8 @@ class _MonthPageState extends State<MonthPage> {
             animation: animation,
             onPressedRemove: (){},
             onPressedEdit: (){},));
-  }*/
+    Category.delete(removedItem.id!);
+  }
 
   final categoryListKey = GlobalKey<AnimatedListState>();
   @override
@@ -72,7 +73,7 @@ class _MonthPageState extends State<MonthPage> {
                     itemBuilder: (context, index, animation) => ListItemCategoryWidget(
                         category: snapshot.data!.categories[index],
                         animation: animation,
-                        onPressedRemove: () => print("da"),
+                        onPressedRemove: () => removeItem(index,snapshot.data!.categories),
                         onPressedEdit: () => print("yes"))),
               );
             }

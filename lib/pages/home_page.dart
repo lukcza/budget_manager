@@ -35,16 +35,16 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                     flex: 1,
                     child: OutlinedButton(
-                        onPressed: () => context.go('/add_category'),
+                        onPressed: () => context.push('/add_category'),
                         child: Container(child: Text("dodaj kategorie")))),
                 Expanded(
                     flex: 1,
                     child: OutlinedButton(
-                        onPressed: () => context.go('/add_payment'),
+                        onPressed: () => context.push('/add_payment'),
                         child: Text("dodaj platnosc"))),Expanded(
                     flex: 1,
                     child: OutlinedButton(
-                        onPressed: () => context.go('/month_page'),
+                        onPressed: () => context.push('/month_page'),
                         child: Text("miesiac"))),
               ],
             )),
