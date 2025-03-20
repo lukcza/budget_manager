@@ -100,7 +100,6 @@ class _CategoryPageState extends State<CategoryPage> {
               ],
             ));
     context.go('/');
-
   }
 
   @override

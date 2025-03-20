@@ -48,7 +48,16 @@ class Category {
       return await DatabaseService.instance.update('categories', toMap(), id!);
     }
   }
-
+  static Future<Category?> getById(int categoryId) async{
+    final data = await DatabaseService.instance.queryAllRows('categories');
+    final categoryData = data.firstWhere((map) => map['id'] == categoryId,
+        orElse: () => {});
+    if(categoryData.isNotEmpty){
+      final category = Category.fromMap(categoryData);
+      await category.loadOptions();
+      return category;
+    }
+  }
   Future<int?> getCategoryId() async {
     final db = await DatabaseService.instance.database;
     final result = await db.query(
