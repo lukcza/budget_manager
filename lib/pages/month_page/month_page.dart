@@ -14,29 +14,11 @@ class MonthPage extends StatefulWidget {
 }
 
 class _MonthPageState extends State<MonthPage> {
-  late Future<Month?> currentMonth= _loadMonthFromDatabase();
+  late Future<Month?> currentMonth= Month.getById(widget.currentMonthId);
   @override
   void initState()  {
     super.initState();
   }
-
-  Future<Month?>_loadMonthFromDatabase() async {
-    try {
-      return await Month.getById(widget.currentMonthId);
-    } catch (error) {
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: Text("Error"),
-                content: Text(error.toString()),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () => context.go('/'), child: Text("ok"))
-                ],
-              ));
-    }
-  }
-
   void removeItem(int index, List<Category> categoriesList) {
     final removedItem = categoriesList[index];
     categoriesList.removeAt(index);
@@ -49,7 +31,6 @@ class _MonthPageState extends State<MonthPage> {
             onPressedEdit: (){},));
     Category.delete(removedItem.id!);
   }
-
   final categoryListKey = GlobalKey<AnimatedListState>();
   @override
   Widget build(BuildContext context) {
