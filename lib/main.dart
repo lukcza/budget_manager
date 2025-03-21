@@ -40,12 +40,23 @@ class MyApp extends StatelessWidget {
               path: '/add_option/:categoryId/:categoryName',
               builder: (context, state) {
                 final categoryTitle = state.pathParameters['categoryName'];
-                final categoryId = int.parse(state.pathParameters['categoryId']!);
-                return  CategoryPage(categoryTitle: categoryTitle!, categoryId: categoryId,);
+                final categoryId =
+                    int.parse(state.pathParameters['categoryId']!);
+                return CategoryPage(
+                  categoryTitle: categoryTitle!,
+                  categoryId: categoryId,
+                );
               }),
           GoRoute(
-              path: '/add_payment', builder: (context, state) => AddPayment(currentMonthId: currentMonthId,)),
-          GoRoute(path: '/month_page',builder: (context,state) =>MonthPage(currentMonthId: currentMonthId,))
+              path: '/add_payment',
+              builder: (context, state) => AddPayment(
+                    currentMonthId: currentMonthId,
+                  )),
+          GoRoute(
+              path: '/month_page',
+              builder: (context, state) => MonthPage(
+                    currentMonthId: currentMonthId,
+                  ))
           //GoRoute(path: '/stats', builder: (context,state)=>Stats()),
         ],
       ),

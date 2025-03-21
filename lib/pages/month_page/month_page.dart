@@ -14,23 +14,26 @@ class MonthPage extends StatefulWidget {
 }
 
 class _MonthPageState extends State<MonthPage> {
-  late Future<Month?> currentMonth= Month.getById(widget.currentMonthId);
+  late Future<Month?> currentMonth = Month.getById(widget.currentMonthId);
   @override
-  void initState()  {
+  void initState() {
     super.initState();
   }
+
   void removeItem(int index, List<Category> categoriesList) {
     final removedItem = categoriesList[index];
     categoriesList.removeAt(index);
     categoryListKey.currentState!.removeItem(
         index,
         (context, animation) => ListItemCategoryWidget(
-            category: removedItem,
-            animation: animation,
-            onPressedRemove: (){},
-            onPressedEdit: (){},));
+              category: removedItem,
+              animation: animation,
+              onPressedRemove: () {},
+              onPressedEdit: () {},
+            ));
     Category.delete(removedItem.id!);
   }
+
   final categoryListKey = GlobalKey<AnimatedListState>();
   @override
   Widget build(BuildContext context) {
@@ -38,28 +41,29 @@ class _MonthPageState extends State<MonthPage> {
         body: Column(
       children: [
         FutureBuilder(
-          future: currentMonth,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Błąd: ${snapshot.error}');
-            } else if (!snapshot.hasData || snapshot.data == null) {
-              return Text('Brak danych');
-            } else {
-              return Expanded(
-                child: AnimatedList(
-                    key: categoryListKey,
-                    initialItemCount: snapshot.data!.categories.length,
-                    itemBuilder: (context, index, animation) => ListItemCategoryWidget(
-                        category: snapshot.data!.categories[index],
-                        animation: animation,
-                        onPressedRemove: () => removeItem(index,snapshot.data!.categories),
-                        onPressedEdit: () => print("yes"))),
-              );
-            }
-          }
-        ),
+            future: currentMonth,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Błąd: ${snapshot.error}');
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return Text('Brak danych');
+              } else {
+                return Expanded(
+                  child: AnimatedList(
+                      key: categoryListKey,
+                      initialItemCount: snapshot.data!.categories.length,
+                      itemBuilder: (context, index, animation) =>
+                          ListItemCategoryWidget(
+                              category: snapshot.data!.categories[index],
+                              animation: animation,
+                              onPressedRemove: () =>
+                                  removeItem(index, snapshot.data!.categories),
+                              onPressedEdit: () => print("yes"))),
+                );
+              }
+            }),
         Padding(
             padding: const EdgeInsets.all(8),
             child: Row(
@@ -74,26 +78,6 @@ class _MonthPageState extends State<MonthPage> {
               ],
             ))
       ],
-    )
-        /*FutureBuilder(
-          future: DatabaseService.instance
-              .getCategoriesForMonth(widget.currentMonthId),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Błąd: ${snapshot.error}');
-            } else if (!snapshot.hasData || snapshot.data == null) {
-              return Text('Brak danych');
-            } else {
-              return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) => ListTile(
-                        title:
-                            Text(snapshot.data![index]['month_id'].toString()),
-                      ));
-            }
-          }),*/
-        );
+    ));
   }
 }

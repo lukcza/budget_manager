@@ -1,3 +1,5 @@
+import 'package:budget_manager/models/category.dart';
+
 import '../services/database_service.dart';
 
 class Option {
@@ -49,5 +51,14 @@ class Option {
 
   static Future<int> delete(int id) async {
     return await DatabaseService.instance.delete('options', id);
+  }
+  static Future addPayment(int optionId, double amount) async {
+    final db = await DatabaseService.instance.database;
+    db.update(
+      'options',
+      {'actual_cost': amount},
+      where: ' id=? ',
+      whereArgs: [optionId]
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:budget_manager/models/category.dart';
+import 'package:budget_manager/models/option.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +21,8 @@ class _AddPaymentState extends State<AddPayment> {
   final descriptionController = TextEditingController();
   late Future<Month?> currentMonth = Month.getById(widget.currentMonthId);
   Future<Category?>? chosenCategory;
+  int? optionId;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +59,7 @@ class _AddPaymentState extends State<AddPayment> {
                               future: chosenCategory,
                               builder: (BuildContext context, snapshot) {
                                 if (snapshot.hasData) {
+                                  optionId = snapshot.data?.id;
                                   return DropdownMenu(
                                       dropdownMenuEntries: snapshot
                                           .data!.options
@@ -79,7 +83,23 @@ class _AddPaymentState extends State<AddPayment> {
               keyboardType: TextInputType.text,
             ),
             ElevatedButton(
-                onPressed: () => print("payment send"), child: Text("send"))
+                onPressed: () async{
+                  if ((optionId != null) && (double.tryParse(amountController.text) != null) && (double.parse(amountController.text) != 0)) {
+                    await Option.addPayment(optionId!,double.parse(amountController.text) as double);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("dodano"))
+                    );
+                  }else if(double.tryParse(amountController.text) == null || double.parse(amountController.text) == 0){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("nie podana kwoty lub kwota = 0 po co to zapisywać?"))
+                    );
+                  }else if(optionId == null){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("nie wybrano opcji"))
+                    );
+                  }
+                }, child
+                : Text("send"))
           ],
         ),
       ),
