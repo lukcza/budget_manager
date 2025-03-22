@@ -60,6 +60,15 @@ class DatabaseService {
         FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
       )
     ''');
+    await db.execute('''
+      CREATE TABLE payments (
+        id $idType,
+        option_id INTEGER NOT NULL,
+        name $textType,
+        cost $doubleType,
+        FOREIGN KEY (option_id) REFERENCES options (id) ON DELETE CASCADE
+      )
+    ''');
   }
 
   Future<int> insert(String table, Map<String, dynamic> data) async {

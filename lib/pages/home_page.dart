@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
                 flex: 1,
                 child: OutlinedButton(
-                    onPressed: () => print("Photo"), child: Text("Photo"))
+                    onPressed: () => context.push('/receipt_scanner'), child: Text("Photo"))
             )
           ],
         ),
