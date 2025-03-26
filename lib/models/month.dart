@@ -107,7 +107,7 @@ class Month {
         'actual_expense': 0.0,
         'planned_balance': 0.0,
         'actual_balance': 0.0,
-        'total_planned_expenses': 0.0,
+        'total_planned_expenses':0.0,
         'total_actual_expenses': 0.0,
       };
 

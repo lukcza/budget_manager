@@ -89,7 +89,7 @@ class _AddPaymentState extends State<AddPayment> {
             ElevatedButton(
                 onPressed: () async{
                   if ((optionId != null) && (double.tryParse(amountController.text) != null) && (double.parse(amountController.text) != 0)) {
-                    await Option.addPayment(optionId!,double.parse(amountController.text) as double);
+                    await Option.addPayment(optionId!,double.parse(amountController.text));
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("dodano"))
                     );
@@ -102,8 +102,8 @@ class _AddPaymentState extends State<AddPayment> {
                         SnackBar(content: Text("nie wybrano opcji"))
                     );
                   }
-                }, child
-                : Text("send"))
+                },
+                child: Text("send"))
           ],
         ),
       ),

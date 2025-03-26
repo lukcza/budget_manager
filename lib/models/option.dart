@@ -1,4 +1,5 @@
 import 'package:budget_manager/models/category.dart';
+import 'package:budget_manager/models/payment.dart';
 
 import '../services/database_service.dart';
 
@@ -8,6 +9,7 @@ class Option {
   final String name;
   final double plannedCost;
   final double actualCost;
+  final List<Payment> payments =[];
 
   Option({
     this.id,

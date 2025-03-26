@@ -17,7 +17,7 @@ class _MonthPageState extends State<MonthPage> {
   late Future<Month?> currentMonth = Month.getById(widget.currentMonthId);
   @override
   void initState() {
-    currentMonth = Month.getById(widget.currentMonthId);
+    //currentMonth = Month.getById(widget.currentMonthId);
     super.initState();
   }
 
