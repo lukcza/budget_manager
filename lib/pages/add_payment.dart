@@ -1,5 +1,6 @@
 import 'package:budget_manager/models/category.dart';
 import 'package:budget_manager/models/option.dart';
+import 'package:budget_manager/models/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,12 +18,13 @@ class AddPayment extends StatefulWidget {
 
 class _AddPaymentState extends State<AddPayment> {
   int? selectedValue;
+  int? selectedOption;
   final amountController = TextEditingController();
   final descriptionController = TextEditingController();
   late Future<Month?> currentMonth = Month.getById(widget.currentMonthId);
   Future<Category?>? chosenCategory;
   int? optionId;
-
+  Payment? payment;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,23 +56,24 @@ class _AddPaymentState extends State<AddPayment> {
                             });
                           },
                         ),
-                        if (chosenCategory != null)
-                          FutureBuilder(
-                              future: chosenCategory,
-                              builder: (BuildContext context, snapshot) {
-                                if (snapshot.hasData) {
-                                  optionId = snapshot.data?.id;
-                                  return DropdownMenu(
-                                      dropdownMenuEntries: snapshot
-                                          .data!.options
-                                          .map((option) => DropdownMenuEntry(
-                                              value: option.id,
-                                              label: option.name))
-                                          .toList());
-                                } else {
-                                  return Text('Brak danych');
-                                }
-                              })
+                        FutureBuilder(
+                            future: chosenCategory,
+                            builder: (BuildContext context, snapshot) {
+                              if (snapshot.hasData) {
+                                optionId = snapshot.data?.id;
+                                return DropdownMenu(
+                                    onSelected: null,
+                                    dropdownMenuEntries: snapshot
+                                        .data!.options
+                                        .map((option) => DropdownMenuEntry(
+                                        value: option.id,
+                                        label: option.name))
+                                        .toList());
+                              } else {
+                                return DropdownMenu(dropdownMenuEntries: [],onSelected: null);
+                              }
+                            })
+
                       ],
                     ));
                   }
@@ -81,6 +84,7 @@ class _AddPaymentState extends State<AddPayment> {
             ),
             TextField(
               keyboardType: TextInputType.text,
+              controller: descriptionController,
             ),
             ElevatedButton(
                 onPressed: () async{

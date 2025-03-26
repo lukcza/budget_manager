@@ -35,7 +35,6 @@ class _ReceiptScannerState extends State<ReceiptScanner> {
       }
     }
 
-    // Plan B: Jeśli nie znaleziono "suma", bierzemy pierwszą sensowną kwotę z całego tekstu
     final Match? fallbackAmount = amountRegex.firstMatch(text);
     if (fallbackAmount != null) {
       return '${fallbackAmount.group(0)} zł';

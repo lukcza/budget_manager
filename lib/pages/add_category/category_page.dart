@@ -76,9 +76,6 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   void _addAllOptions() async {
-    for (var item in items) {
-      item.save();
-    }
     await showDialog(
         context: context,
         builder:(BuildContext context)=>
@@ -87,13 +84,16 @@ class _CategoryPageState extends State<CategoryPage> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();// Zamknięcie dialogu
+                    for (var item in items) {
+                      item.save();
+                    }
+                    Navigator.of(context).pop();
                   },
                   child: Text('TAK'),
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Zamknięcie dialogu
+                    Navigator.of(context).pop();
                   },
                   child: Text('NIE'),
                 ),

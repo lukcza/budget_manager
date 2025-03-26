@@ -1,3 +1,4 @@
+import 'package:budget_manager/models/option.dart';
 import 'package:budget_manager/services/database_service.dart';
 
 class Payment {
@@ -21,4 +22,14 @@ class Payment {
       optionId: map['option_id'],
       name: map['name'],
       cost: map['cost']);
+  Future<int> save() async {
+    if (this.optionId != null && id == null) {
+      Option.addPayment(this.optionId, this.cost);
+      return await DatabaseService.instance.insert('payments', toMap());
+    } else if (id == null) {
+      return await DatabaseService.instance.insert('payments', toMap());
+    } else {
+      return await DatabaseService.instance.update('payments', toMap(), id!);
+    }
+  }
 }

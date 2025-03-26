@@ -35,10 +35,14 @@ class Category {
 
   static Future<List<Category>> getByMonthId(int monthId) async {
     final data = await DatabaseService.instance.queryAllRows('categories');
-    return data
+    List<Category> list = data
         .where((map) => map['month_id'] == monthId)
         .map((map) => Category.fromMap(map))
         .toList();
+    for(var item in list){
+      item.loadOptions();
+    }
+    return list;
   }
 
   Future<int> save() async {
