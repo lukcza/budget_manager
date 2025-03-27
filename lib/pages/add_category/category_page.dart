@@ -84,18 +84,18 @@ class _CategoryPageState extends State<CategoryPage> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('NIE'),
+                ),
+                TextButton(
+                  onPressed: () {
                     for (var item in items) {
                       item.save();
                     }
                     Navigator.of(context).pop();
                   },
                   child: Text('TAK'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('NIE'),
                 ),
               ],
             ));
