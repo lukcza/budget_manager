@@ -64,26 +64,26 @@ class _MonthPageState extends State<MonthPage> {
                 onTap: _hidePopupMenu,
                 child: ListView.builder(
                   itemCount: snapshot.data!.categories.length,
-                  itemBuilder: (context, index) {
-                    bool isExpanded = expandedIndex == index;
-                    bool isMenuVisible = menuIndex == index;
+                  itemBuilder: (context, categoryIndex) {
+                    bool isExpanded = expandedIndex == categoryIndex;
+                    bool isMenuVisible = menuIndex == categoryIndex;
                     return Column(
                       children: [
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              expandedIndex = isExpanded ? null : index;
+                              expandedIndex = isExpanded ? null : categoryIndex;
                             });
                           },
                           onLongPress: () {
-                            _showPopupMenu(index);
+                            _showPopupMenu(categoryIndex);
                           },
                           child: AnimatedContainer(
                             duration: Duration(milliseconds: 300),
                             padding: EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
-                              color: isExpanded ? Colors.blue.shade100 : Colors.white,
-                              border: Border.all(color: Colors.grey),
+                              color: isExpanded ? Colors.amber.shade50 : Colors.white,
+                              border: Border.all(color: Colors.black87, width: 3),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -91,24 +91,48 @@ class _MonthPageState extends State<MonthPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ListTile(
-                                  title: Text(snapshot.data!.categories[index].name),
+                                  title: Text(snapshot.data!.categories[categoryIndex].name),
                                   trailing: Icon(
                                     isExpanded ? Icons.expand_less : Icons.expand_more,
                                   ),
                                 ),
                                 if (isExpanded)
                                   SizedBox(
-                                    height: 100,
+                                    height: 200,
                                     child: FutureBuilder(
-                                        future: snapshot.data!.categories[index].loadOptionsList(),
-                                        builder: (BuildContext context, snapshot) {
-                                          if (snapshot.hasData) {
+                                        future: snapshot.data!.categories[categoryIndex].loadOptionsList(),
+                                        builder: (BuildContext context, snapshotNext) {
+                                          if (snapshotNext.hasData) {
                                             return ListView.builder(
-                                                itemCount: snapshot.data!.length,
+                                                itemCount: snapshotNext.data!.length,
                                                 itemBuilder: (context,index){
-                                                  return Text(snapshot.data![index].name);
+                                                  return Column(
+                                                    children: [
+
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Text(snapshotNext.data![index].name),
+                                                          Text(snapshotNext.data![index].actualCost.toString()),
+                                                        ],
+                                                      ),
+                                                      if(index + 1 == snapshotNext.data!.length)
+                                                      Column(
+                                                        children: [
+                                                          Divider(color: Colors.black87),
+                                                          Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Text("suma: "),
+                                                                Text(snapshot.data!.categories[categoryIndex].totalActualCost.toString()),
+                                                              ]
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  );
                                                 });
-                                          } else if (snapshot.hasError) {
+                                          } else if (snapshotNext.hasError) {
                                             return Icon(Icons.error_outline);
                                           } else {
                                             return CircularProgressIndicator();
@@ -121,26 +145,37 @@ class _MonthPageState extends State<MonthPage> {
                         ),
                         if (isMenuVisible)
                           Container(
-                            color: Colors.black54,
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                IconButton(
-                                  icon: Icon(Icons.edit, color: Colors.white),
-                                  onPressed: () {
-                                    _hidePopupMenu();
-                                    // Logika edycji
-                                  },
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 3),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(Icons.edit, color: Colors.black87),
+                                    onPressed: () {
+                                      _hidePopupMenu();
+                                      // Logika edycji
+                                    },
+                                  ),
                                 ),
-                                IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.white),
-                                  onPressed: () {
-                                    setState(() {
-                                      menuIndex = null;
-                                      expandedIndex = null;
-                                    });
-                                  },
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 3),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.black87),
+                                    onPressed: () {
+                                      setState(() {
+                                        menuIndex = null;
+                                        expandedIndex = null;
+                                      });
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
