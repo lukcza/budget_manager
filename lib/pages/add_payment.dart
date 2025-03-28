@@ -20,7 +20,7 @@ class _AddPaymentState extends State<AddPayment> {
   int? selectedValue;
   int? selectedOption;
   final amountController = TextEditingController();
-  final descriptionController = TextEditingController();
+  final nameController = TextEditingController();
   late Future<Month?> currentMonth = Month.getById(widget.currentMonthId);
   Future<Category?>? chosenCategory;
   int? optionId;
@@ -51,8 +51,7 @@ class _AddPaymentState extends State<AddPayment> {
                               .toList(),
                           onSelected: (value) {
                             setState(() {
-                              chosenCategory = Category.getById(
-                                value!);
+                              chosenCategory = Category.getById(value!);
                             });
                           },
                         ),
@@ -63,17 +62,16 @@ class _AddPaymentState extends State<AddPayment> {
                                 optionId = snapshot.data?.id;
                                 return DropdownMenu(
                                     onSelected: null,
-                                    dropdownMenuEntries: snapshot
-                                        .data!.options
+                                    dropdownMenuEntries: snapshot.data!.options
                                         .map((option) => DropdownMenuEntry(
-                                        value: option.id,
-                                        label: option.name))
+                                            value: option.id,
+                                            label: option.name))
                                         .toList());
                               } else {
-                                return DropdownMenu(dropdownMenuEntries: [],onSelected: null);
+                                return DropdownMenu(
+                                    dropdownMenuEntries: [], onSelected: null);
                               }
                             })
-
                       ],
                     ));
                   }
@@ -84,23 +82,32 @@ class _AddPaymentState extends State<AddPayment> {
             ),
             TextField(
               keyboardType: TextInputType.text,
-              controller: descriptionController,
+              controller: nameController,
             ),
             ElevatedButton(
-                onPressed: () async{
-                  if ((optionId != null) && (double.tryParse(amountController.text) != null) && (double.parse(amountController.text) != 0)) {
-                    await Option.addPayment(optionId!,double.parse(amountController.text));
+                onPressed: () async {
+                  if ((optionId != null) &&
+                      (double.tryParse(amountController.text) != null) &&
+                      (double.parse(amountController.text) != 0)) {
+                    await Option.addPayment(
+                        optionId!, double.parse(amountController.text));
+
+                    payment = Payment(
+                        optionId: optionId!,
+                        name: nameController.value.text,
+                        cost: double.parse(amountController.value.text),
+                        createdAt: DateTime.now());
+                    payment!.save();
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text("dodano")));
+                  } else if (double.tryParse(amountController.text) == null ||
+                      double.parse(amountController.text) == 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            "nie podana kwoty lub kwota = 0 po co to zapisywać?")));
+                  } else if (optionId == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("dodano"))
-                    );
-                  }else if(double.tryParse(amountController.text) == null || double.parse(amountController.text) == 0){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("nie podana kwoty lub kwota = 0 po co to zapisywać?"))
-                    );
-                  }else if(optionId == null){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("nie wybrano opcji"))
-                    );
+                        SnackBar(content: Text("nie wybrano opcji")));
                   }
                 },
                 child: Text("send"))

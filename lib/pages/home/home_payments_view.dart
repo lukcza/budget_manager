@@ -14,6 +14,7 @@ class _HomePaymentsViewState extends State<HomePaymentsView> {
   late Future<List<Payment?>> listOfPayments = Payment.getListOfPayments();
   void initState() {
     // TODO: implement initState
+    listOfPayments = Payment.getListOfPayments();
     super.initState();
   }
 
@@ -115,7 +116,7 @@ class _HomePaymentsViewState extends State<HomePaymentsView> {
                   return PaymentCard(
                     name: paymentMap['name'],
                     cost: paymentMap['cost'],
-                    date: paymentMap['created_at'],
+                    date: DateTime.parse(paymentMap['created_at']),
                   );
                 },
               );

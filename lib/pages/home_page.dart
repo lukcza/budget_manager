@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                     flex: 1,
                     child: OutlinedButton(
-                        onPressed: () => context.push('/add_category'),
+                        onPressed: () => context.push('/category'),
                         child: Container(child: Text("dodaj kategorie")))),
                 Expanded(
                     flex: 1,

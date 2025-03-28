@@ -1,7 +1,7 @@
 import 'package:budget_manager/models/month.dart';
-import 'package:budget_manager/pages/add_category/add_category_page.dart';
-import 'package:budget_manager/pages/add_category/category_page.dart';
 import 'package:budget_manager/pages/add_payment.dart';
+import 'package:budget_manager/pages/category/add_category_page.dart';
+import 'package:budget_manager/pages/category/category_page.dart';
 import 'package:budget_manager/pages/home/home_page_new.dart';
 import 'package:budget_manager/pages/home_page.dart';
 import 'package:budget_manager/pages/month_page/month_page.dart';

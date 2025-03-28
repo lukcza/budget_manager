@@ -223,7 +223,7 @@ class _MonthPageState extends State<MonthPage> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 ElevatedButton(
-                    onPressed: () => context.go('/add_category'),
+                    onPressed: () => context.go('/category'),
                     child: Text("dodaj")),
                 ElevatedButton(
                     onPressed: () => context.go('/'), child: Text("wróć")),
