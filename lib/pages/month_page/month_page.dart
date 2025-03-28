@@ -108,7 +108,6 @@ class _MonthPageState extends State<MonthPage> {
                                                 itemBuilder: (context,index){
                                                   return Column(
                                                     children: [
-
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
