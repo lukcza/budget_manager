@@ -1,5 +1,9 @@
+import 'package:budget_manager/models/category.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/month.dart';
+import '../../models/option.dart';
+import '../../models/payment.dart';
 import 'home_payments_view.dart';
 
 class HomePageNew extends StatefulWidget {
@@ -15,39 +19,69 @@ class _HomePageNewState extends State<HomePageNew> {
     DropdownMenuEntry(value: 1, label: "Wczorajsze"),
     DropdownMenuEntry(value: 2, label: "Tydzień temu"),
   ];
-  final  viewIndex = 0;
+  late int viewIndex = 0;
   late final selectedTimeRange;
+  Month? currentMonth;
+  Category? category;
+  Option? option;
+  Payment? payment;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Miesiąc 2025"),actions: [
         IconButton(onPressed: ()=>{}, icon: Icon(Icons.help_outline))
       ],),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              ElevatedButton(onPressed: ()=>{}, child: Text("Budżet")),
-              ElevatedButton(onPressed: ()=>{}, child: Text("Kategorie")),
-              ElevatedButton(onPressed: ()=>{}, child: Text("Płatności")),
-            ],
-          ),
-          Builder(
-            builder: (context) {
-              switch (viewIndex) {
-                case 0:
-                  return HomePaymentsView();
-                case 1:
-                  return const Text('Wybrano opcję 2');
-                case 2:
-                  return const Text('Wybrano opcję 3');
-                default:
-                  return const Text('Nieznana opcja');
-              }
-            },
-          ),
-
-        ],),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      viewIndex = 0;
+                    });
+                  },
+                  child: Text("Budżet"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      viewIndex = 1;
+                    });
+                  },
+                  child: Text("Kategorie"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      viewIndex = 2;
+                    });
+                  },
+                  child: Text("Płatności"),
+                ),
+              ],
+            ),
+            Expanded(
+              child: Builder(
+                builder: (context) {
+                  switch (viewIndex) {
+                    case 0:
+                      return const Center(child: Text('Wybrano opcję 0'));
+                    case 1:
+                      return const Center(child: Text('Wybrano opcję 1'));
+                    case 2:
+                      return HomePaymentsView(currentMonth: widget.currentMonthId);
+                    default:
+                      return HomePaymentsView(currentMonth: widget.currentMonthId);
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.amber.shade600,
           unselectedItemColor: Colors.grey.shade600,

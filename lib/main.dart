@@ -2,6 +2,7 @@ import 'package:budget_manager/models/month.dart';
 import 'package:budget_manager/pages/add_category/add_category_page.dart';
 import 'package:budget_manager/pages/add_category/category_page.dart';
 import 'package:budget_manager/pages/add_payment.dart';
+import 'package:budget_manager/pages/home/home_page_new.dart';
 import 'package:budget_manager/pages/home_page.dart';
 import 'package:budget_manager/pages/month_page/month_page.dart';
 import 'package:budget_manager/pages/receipt_scanner_page/ReceiptScanner.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         routes: [
           GoRoute(
               path: '/',
-              builder: (context, state) => HomePage(
+              builder: (context, state) => HomePageNew(
                     currentMonthId: this.currentMonthId,
                   )),
           GoRoute(

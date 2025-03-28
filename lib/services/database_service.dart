@@ -66,6 +66,7 @@ class DatabaseService {
         option_id INTEGER NOT NULL,
         name $textType,
         cost $doubleType,
+        created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now')),
         FOREIGN KEY (option_id) REFERENCES options (id) ON DELETE CASCADE
       )
     ''');
