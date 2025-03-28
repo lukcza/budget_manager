@@ -14,6 +14,8 @@ class MonthPage extends StatefulWidget {
 }
 
 class _MonthPageState extends State<MonthPage> {
+  int? expandedIndex;
+  int? menuIndex;
   late Future<Month?> currentMonth = Month.getById(widget.currentMonthId);
   @override
   void initState() {
@@ -34,10 +36,125 @@ class _MonthPageState extends State<MonthPage> {
             ));
     Category.delete(removedItem.id!);
   }
-
+  void _showPopupMenu(int index) {
+    setState(() {
+      menuIndex = index;
+    });
+  }
+  void _hidePopupMenu() {
+    setState(() {
+      menuIndex = null;
+    });
+  }
   final categoryListKey = GlobalKey<AnimatedListState>();
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+          future: currentMonth,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Błąd: ${snapshot.error}');
+            } else if (!snapshot.hasData || snapshot.data == null) {
+              return Text('Brak danych');
+            } else {
+              return GestureDetector(
+                onTap: _hidePopupMenu,
+                child: ListView.builder(
+                  itemCount: snapshot.data!.categories.length,
+                  itemBuilder: (context, index) {
+                    bool isExpanded = expandedIndex == index;
+                    bool isMenuVisible = menuIndex == index;
+                    return Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              expandedIndex = isExpanded ? null : index;
+                            });
+                          },
+                          onLongPress: () {
+                            _showPopupMenu(index);
+                          },
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: isExpanded ? Colors.blue.shade100 : Colors.white,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ListTile(
+                                  title: Text(snapshot.data!.categories[index].name),
+                                  trailing: Icon(
+                                    isExpanded ? Icons.expand_less : Icons.expand_more,
+                                  ),
+                                ),
+                                if (isExpanded)
+                                  SizedBox(
+                                    height: 100,
+                                    child: FutureBuilder(
+                                        future: snapshot.data!.categories[index].loadOptionsList(),
+                                        builder: (BuildContext context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return ListView.builder(
+                                                itemCount: snapshot.data!.length,
+                                                itemBuilder: (context,index){
+                                                  return Text(snapshot.data![index].name);
+                                                });
+                                          } else if (snapshot.hasError) {
+                                            return Icon(Icons.error_outline);
+                                          } else {
+                                            return CircularProgressIndicator();
+                                          }
+                                        }),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (isMenuVisible)
+                          Container(
+                            color: Colors.black54,
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.edit, color: Colors.white),
+                                  onPressed: () {
+                                    _hidePopupMenu();
+                                    // Logika edycji
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.white),
+                                  onPressed: () {
+                                    setState(() {
+                                      menuIndex = null;
+                                      expandedIndex = null;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            }
+          }),
+    );
+  }
+  /*Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
       children: [
@@ -80,5 +197,5 @@ class _MonthPageState extends State<MonthPage> {
             ))
       ],
     ));
-  }
+  }*/
 }

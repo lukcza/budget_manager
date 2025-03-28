@@ -32,7 +32,16 @@ class Category {
           options.fold(0.0, (sum, option) => sum + option.actualCost);
     }
   }
-
+  Future<List<Option>> loadOptionsList() async {
+    if (id != null) {
+      options = await Option.getByCategoryId(id!);
+      totalPlannedCost =
+          options.fold(0.0, (sum, option) => sum + option.plannedCost);
+      totalActualCost =
+          options.fold(0.0, (sum, option) => sum + option.actualCost);
+    }
+    return options;
+  }
   static Future<List<Category>> getByMonthId(int monthId) async {
     final data = await DatabaseService.instance.queryAllRows('categories');
     List<Category> list = data
