@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-class BudgetPage extends StatefulWidget {
-  const BudgetPage({super.key, required this.currentMonthID});
+class BudgetPageChartView extends StatefulWidget {
+  const BudgetPageChartView({super.key, required this.currentMonthID});
   final currentMonthID;
   @override
-  State<BudgetPage> createState() => _BudgetPageState();
+  State<BudgetPageChartView> createState() => _BudgetPageChartViewState();
 }
 
-class _BudgetPageState extends State<BudgetPage> {
+class _BudgetPageChartViewState extends State<BudgetPageChartView> {
+  final List<PieChartSectionData> pieChartList= [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +18,9 @@ class _BudgetPageState extends State<BudgetPage> {
       body: Column(
         children: [
           PieChart(
-              PieChartData(),
+              PieChartData(
+                sections: pieChartList
+              ),
             duration: Duration(milliseconds: 150), // Optional
             curve: Curves.easeOutExpo,
           )

@@ -67,7 +67,10 @@ class Month {
     final data = await DatabaseService.instance.queryAllRows('months');
     return data.map((map) => Month.fromMap(map)).toList();
   }
-
+  Future<List<Category>> getCategories() async{
+    loadCategories();
+    return categories;
+  }
   static Future<Month?> getById(int monthId) async {
     final data = await DatabaseService.instance.queryAllRows('months');
     final monthData = data.firstWhere((map) => map['id'] == monthId,
@@ -79,7 +82,7 @@ class Month {
     }
     return null;
   }
-  static Future<int> ensureCurrentMonth() async {
+  static Future<Map<String, dynamic>> ensureCurrentMonth() async {
     final db = await DatabaseService.instance.database;
     String currentMonth = DateFormat('MMMM yyyy').format(DateTime.now());
 
@@ -90,9 +93,11 @@ class Month {
     );
 
     if (result.isNotEmpty) {
-      return result.first['id'] as int;
+      return {
+        'newMonthId': result.first['id'] as int,
+        'isNewMonthExist': false,
+      };
     } else {
-      // Get last month data
       final lastMonthData = await db.query(
         'months',
         orderBy: 'id DESC',
@@ -107,7 +112,7 @@ class Month {
         'actual_expense': 0.0,
         'planned_balance': 0.0,
         'actual_balance': 0.0,
-        'total_planned_expenses':0.0,
+        'total_planned_expenses': 0.0,
         'total_actual_expenses': 0.0,
       };
 
@@ -116,8 +121,7 @@ class Month {
         newMonthData['planned_income'] = lastMonth['planned_income'];
         newMonthData['planned_expense'] = lastMonth['planned_expense'];
         newMonthData['planned_balance'] = lastMonth['planned_balance'];
-        newMonthData['total_planned_expenses'] =
-        lastMonth['total_planned_expenses'];
+        newMonthData['total_planned_expenses'] = lastMonth['total_planned_expenses'];
       }
 
       final newMonthId = await db.insert('months', newMonthData);
@@ -143,7 +147,10 @@ class Month {
         }
       }
 
-      return newMonthId;
+      return {
+        'newMonthId': newMonthId,
+        'isNewMonthExist': true,
+      };
     }
   }
 
