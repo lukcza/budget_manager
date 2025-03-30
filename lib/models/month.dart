@@ -6,7 +6,7 @@ import 'category.dart';
 class Month {
   final int? id;
   final String name;
-  final double plannedIncome;
+  double plannedIncome;
   final double actualIncome;
   final double plannedExpense;
   final double actualExpense;
@@ -29,8 +29,7 @@ class Month {
     this.totalActualExpenses = 0.0,
   });
 
-  Map<String, dynamic> toMap() =>
-      {
+  Map<String, dynamic> toMap() => {
         'id': id,
         'name': name,
         'planned_income': plannedIncome,
@@ -43,8 +42,7 @@ class Month {
         'total_actual_expenses': totalActualExpenses,
       };
 
-  factory Month.fromMap(Map<String, dynamic> map) =>
-      Month(
+  factory Month.fromMap(Map<String, dynamic> map) => Month(
         id: map['id'],
         name: map['name'],
         plannedIncome: map['planned_income'],
@@ -57,6 +55,14 @@ class Month {
         totalActualExpenses: map['total_actual_expenses'],
       );
 
+  Future<int> save() async {
+    if (id == null) {
+      return await DatabaseService.instance.insert('months', toMap());
+    } else {
+      return await DatabaseService.instance.update('months', toMap(), id!);
+    }
+  }
+
   Future<void> loadCategories() async {
     if (id != null) {
       categories = await Category.getByMonthId(id!);
@@ -67,14 +73,16 @@ class Month {
     final data = await DatabaseService.instance.queryAllRows('months');
     return data.map((map) => Month.fromMap(map)).toList();
   }
-  Future<List<Category>> getCategories() async{
+
+  Future<List<Category>> getCategories() async {
     loadCategories();
     return categories;
   }
+
   static Future<Month?> getById(int monthId) async {
     final data = await DatabaseService.instance.queryAllRows('months');
-    final monthData = data.firstWhere((map) => map['id'] == monthId,
-        orElse: () => {});
+    final monthData =
+        data.firstWhere((map) => map['id'] == monthId, orElse: () => {});
     if (monthData.isNotEmpty) {
       final month = Month.fromMap(monthData);
       await month.loadCategories();
@@ -82,6 +90,7 @@ class Month {
     }
     return null;
   }
+
   static Future<Map<String, dynamic>> ensureCurrentMonth() async {
     final db = await DatabaseService.instance.database;
     String currentMonth = DateFormat('MMMM yyyy').format(DateTime.now());
@@ -121,7 +130,8 @@ class Month {
         newMonthData['planned_income'] = lastMonth['planned_income'];
         newMonthData['planned_expense'] = lastMonth['planned_expense'];
         newMonthData['planned_balance'] = lastMonth['planned_balance'];
-        newMonthData['total_planned_expenses'] = lastMonth['total_planned_expenses'];
+        newMonthData['total_planned_expenses'] =
+            lastMonth['total_planned_expenses'];
       }
 
       final newMonthId = await db.insert('months', newMonthData);
@@ -153,5 +163,4 @@ class Month {
       };
     }
   }
-
 }

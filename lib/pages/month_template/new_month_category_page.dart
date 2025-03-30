@@ -6,7 +6,9 @@ import '../../models/category.dart';
 
 class NewMonthCategoryPage extends StatefulWidget {
   NewMonthCategoryPage({super.key, required this.currentMonthId});
+
   final currentMonthId;
+
   @override
   State<NewMonthCategoryPage> createState() => _NewMonthCategoryPageState();
 }
@@ -60,6 +62,8 @@ class _NewMonthCategoryPageState extends State<NewMonthCategoryPage> {
               children: [
                 Expanded(
                   child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       snapshot.data![index].loadOptions();
@@ -67,7 +71,7 @@ class _NewMonthCategoryPageState extends State<NewMonthCategoryPage> {
                         title: Text(snapshot.data![index].name),
                         subtitle: Text(
                           "Suma planowanych kosztów: ${snapshot.data![index].totalPlannedCost} "
-                              "Ilość opcji: ${snapshot.data![index].options.length}",
+                          "Ilość opcji: ${snapshot.data![index].options.length}",
                         ),
                         trailing: IconButton(
                           onPressed: () {},
@@ -125,7 +129,8 @@ class _NewMonthCategoryPageState extends State<NewMonthCategoryPage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: ()=>context.go('/new_options')),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () => context.push('/new_options')),
     );
   }
 }
