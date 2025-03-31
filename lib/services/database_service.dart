@@ -35,9 +35,7 @@ class DatabaseService {
         planned_expense $doubleType,
         actual_expense $doubleType,
         planned_balance $doubleType,
-        actual_balance $doubleType,
-        total_planned_expenses $doubleType,
-        total_actual_expenses $doubleType
+        actual_balance $doubleType
       )
     ''');
 

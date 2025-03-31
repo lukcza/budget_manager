@@ -67,15 +67,17 @@ class _NewMonthCategoryPageState extends State<NewMonthCategoryPage> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       snapshot.data![index].loadOptions();
-                      return ListTile(
-                        title: Text(snapshot.data![index].name),
-                        subtitle: Text(
-                          "Suma planowanych kosztów: ${snapshot.data![index].totalPlannedCost} "
-                          "Ilość opcji: ${snapshot.data![index].options.length}",
-                        ),
-                        trailing: IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.remove_circle_outline),
+                      return Card(
+                        child: ListTile(
+                          title: Text(snapshot.data![index].name),
+                          subtitle: Text(
+                            "Suma planowanych kosztów: ${snapshot.data![index].totalPlannedCost} "
+                            "\nIlość opcji: ${snapshot.data![index].options.length}",
+                          ),
+                          trailing: IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.remove_circle_outline),
+                          ),
                         ),
                       );
                     },
@@ -130,7 +132,8 @@ class _NewMonthCategoryPageState extends State<NewMonthCategoryPage> {
         },
       ),
       floatingActionButton:
-          FloatingActionButton(onPressed: () => context.push('/new_options')),
+          FloatingActionButton(
+              child: Icon(Icons.arrow_right_alt),onPressed: () => context.push('/new_options')),
     );
   }
 }

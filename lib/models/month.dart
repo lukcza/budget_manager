@@ -12,8 +12,6 @@ class Month {
   double actualExpense;
   double plannedBalance;
   double actualBalance;
-  double totalPlannedExpenses;
-  double totalActualExpenses;
   List<Category> categories = [];
 
   Month({
@@ -25,8 +23,6 @@ class Month {
     this.actualExpense = 0.0,
     this.plannedBalance = 0.0,
     this.actualBalance = 0.0,
-    this.totalPlannedExpenses = 0.0,
-    this.totalActualExpenses = 0.0,
   });
 
   Map<String, dynamic> toMap() => {
@@ -100,7 +96,7 @@ class Month {
   static Future<Map<String, dynamic>> ensureCurrentMonth() async {
     final db = await DatabaseService.instance.database;
     String currentMonth = DateFormat('MMMM yyyy').format(DateTime.now());
-
+    currentMonth = getPolishMonthName(currentMonth);
     final result = await db.query(
       'months',
       where: 'name = ?',
@@ -164,5 +160,31 @@ class Month {
         'isNewMonthExist': true,
       };
     }
+  }
+}
+String getPolishMonthName(String input) {
+  Map<String, String> monthNames = {
+    "January": "Styczeń",
+    "February": "Luty",
+    "March": "Marzec",
+    "April": "Kwiecień",
+    "May": "Maj",
+    "June": "Czerwiec",
+    "July": "Lipiec",
+    "August": "Sierpień",
+    "September": "Wrzesień",
+    "October": "Październik",
+    "November": "Listopad",
+    "December": "Grudzień",
+  };
+
+  try {
+    List<String> parts = input.split(" ");
+    String month = parts[0];
+    String year = parts[1];
+
+    return "${monthNames[month] ?? 'Nieznany miesiąc'} $year";
+  } catch (e) {
+    return input;
   }
 }

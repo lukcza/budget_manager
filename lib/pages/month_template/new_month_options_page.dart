@@ -62,7 +62,6 @@ class _NewMonthOptionsPageState extends State<NewMonthOptionsPage> {
     });
     await _loadOptions();
   }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Category>>(
@@ -108,60 +107,62 @@ class _NewMonthOptionsPageState extends State<NewMonthOptionsPage> {
                     },
                   ),
                   Container(
+                    alignment: Alignment.bottomCenter,
                     padding: const EdgeInsets.only(bottom: 20),
-                    child: Container(
-                      child: ListTile(
-                        title: Text("Dodaj opcje"),
-                        trailing: IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text("Wprowadź dane nowej kategorii"),
-                                    TextField(
-                                      controller: optionsNameController,
-                                      decoration: InputDecoration(
-                                        label: Text("Nazwa opcji"),
-                                        hintText: "...",
-                                      ),
+                    child: Column(
+                      children: [
+                        Container(
+                          child: ListTile(
+                            title: Text("Dodaj opcje"),
+                            trailing: IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text("Wprowadź dane nowej kategorii"),
+                                        TextField(
+                                          controller: optionsNameController,
+                                          decoration: InputDecoration(
+                                            label: Text("Nazwa opcji"),
+                                            hintText: "...",
+                                          ),
+                                        ),
+                                        TextField(
+                                          controller: costController,
+                                          decoration: InputDecoration(
+                                            label: Text("Planowany koszt"),
+                                            hintText: "0",
+                                          ),
+                                        ),
+                                        TextField(
+                                          controller: costActualController,
+                                          decoration: InputDecoration(
+                                            label: Text("Aktualny koszt"),
+                                            hintText: "0",
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    TextField(
-                                      controller: costController,
-                                      decoration: InputDecoration(
-                                        label: Text("Planowany koszt"),
-                                        hintText: "0",
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () async {
+                                          await _addOption(snapshot
+                                              .data![categoriesListIndex].id!);
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Dodaj"),
                                       ),
-                                    ),
-                                    TextField(
-                                      controller: costActualController,
-                                      decoration: InputDecoration(
-                                        label: Text("Aktualny koszt"),
-                                        hintText: "0",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () async {
-                                      await _addOption(snapshot
-                                          .data![categoriesListIndex].id!);
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("Dodaj"),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                          icon: Icon(Icons.add_circle_outline),
+                                );
+                              },
+                              icon: Icon(Icons.add_circle_outline),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Row(
@@ -196,6 +197,9 @@ class _NewMonthOptionsPageState extends State<NewMonthOptionsPage> {
                         ),
                       ],
                     ),
+                  ),
+                    ]
+                  )
                   )
                 ],
               ),

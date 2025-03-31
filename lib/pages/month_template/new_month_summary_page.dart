@@ -1,4 +1,6 @@
+import 'package:budget_manager/widgets/item_in_summary_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../models/month.dart';
 
@@ -13,7 +15,7 @@ class NewMonthSummaryPage extends StatefulWidget {
 
 class _NewMonthSummaryPageState extends State<NewMonthSummaryPage> {
   late Future<Month?> currentMonth;
-
+  late Month readyMonth;
   @override
   void initState() {
     // TODO: implement initState
@@ -24,36 +26,43 @@ class _NewMonthSummaryPageState extends State<NewMonthSummaryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder(
-            future: currentMonth,
-            builder: (BuildContext context, snapshot) {
-              snapshot.data!.updateVariables();
-              if (snapshot.hasData) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(snapshot.data!.name),
-                      Text(
-                          "Zaplanowany przychód: ${snapshot.data!.plannedIncome}"),
-                      Text(
-                          "Dodatkowy przychód: ${snapshot.data!.actualIncome}"),
-                      Text(
-                          "Suma zaplanowanych wydatków:${snapshot.data!.plannedExpense}"),
-                      Text(
-                          "Suma aktualnych wydatków:${snapshot.data!.actualExpense}"),
-                      Text("Planowana Dochód:${snapshot.data!.plannedBalance}"),
-                      Text("Aktualny Dochód :${snapshot.data!.actualBalance}"),
-                      Text(
-                          "Liczba Kategori :${snapshot.data!.categories.length}"),
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Icon(Icons.error_outline);
-              } else {
-                return CircularProgressIndicator();
-              }
-            }));
+        body: SafeArea(
+          child: FutureBuilder(
+              future: currentMonth,
+              builder: (BuildContext context, snapshot) {
+
+                if (snapshot.hasData) {
+                  snapshot.data!.updateVariables();
+                  readyMonth = snapshot.data!;
+                  return Container(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ItemInSummaryPage(prefixText: 'Miesiąc:', text: snapshot.data!.name,),
+                        ItemInSummaryPage(prefixText: 'Zaplanowany przychód:', text: snapshot.data!.plannedIncome.toString(),),
+                        ItemInSummaryPage(prefixText: 'Dodatkowy przychód:', text: snapshot.data!.actualIncome.toString(),),
+                        ItemInSummaryPage(prefixText: 'Suma zaplanowanych wydatków:', text: snapshot.data!.plannedExpense.toString(),),
+                        ItemInSummaryPage(prefixText: 'Suma aktualnych wydatków:', text: snapshot.data!.actualExpense.toString(),),
+                        ItemInSummaryPage(prefixText: 'Planowana Dochód:', text: snapshot.data!.plannedBalance.toString(),),
+                        ItemInSummaryPage(prefixText: 'Aktualny Dochód:', text: snapshot.data!.actualBalance.toString(),),
+                        ItemInSummaryPage(prefixText: 'Liczba Kategori :', text: snapshot.data!.categories.length.toString(),),
+                      ],
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Icon(Icons.error_outline);
+                } else {
+                  return CircularProgressIndicator();
+                }
+              }),
+        ),
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.check),
+                onPressed: (){
+              readyMonth.save();
+              context.go('/');
+            }),
+    );
   }
 }
