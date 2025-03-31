@@ -7,13 +7,13 @@ class Month {
   final int? id;
   final String name;
   double plannedIncome;
-  final double actualIncome;
-  final double plannedExpense;
-  final double actualExpense;
-  final double plannedBalance;
-  final double actualBalance;
-  final double totalPlannedExpenses;
-  final double totalActualExpenses;
+  double actualIncome;
+  double plannedExpense;
+  double actualExpense;
+  double plannedBalance;
+  double actualBalance;
+  double totalPlannedExpenses;
+  double totalActualExpenses;
   List<Category> categories = [];
 
   Month({
@@ -38,8 +38,6 @@ class Month {
         'actual_expense': actualExpense,
         'planned_balance': plannedBalance,
         'actual_balance': actualBalance,
-        'total_planned_expenses': totalPlannedExpenses,
-        'total_actual_expenses': totalActualExpenses,
       };
 
   factory Month.fromMap(Map<String, dynamic> map) => Month(
@@ -51,8 +49,6 @@ class Month {
         actualExpense: map['actual_expense'],
         plannedBalance: map['planned_balance'],
         actualBalance: map['actual_balance'],
-        totalPlannedExpenses: map['total_planned_expenses'],
-        totalActualExpenses: map['total_actual_expenses'],
       );
 
   Future<int> save() async {
@@ -67,6 +63,16 @@ class Month {
     if (id != null) {
       categories = await Category.getByMonthId(id!);
     }
+  }
+
+  Future<void> updateVariables() async {
+    await loadCategories();
+    plannedExpense = categories.fold(
+        0.0, (sum, category) => sum + category.totalPlannedCost);
+    actualExpense =
+        categories.fold(0.0, (sum, category) => sum + category.totalActualCost);
+    plannedBalance = plannedIncome - plannedExpense;
+    actualBalance = plannedIncome + actualIncome - actualExpense;
   }
 
   static Future<List<Month>> getAll() async {
@@ -121,8 +127,6 @@ class Month {
         'actual_expense': 0.0,
         'planned_balance': 0.0,
         'actual_balance': 0.0,
-        'total_planned_expenses': 0.0,
-        'total_actual_expenses': 0.0,
       };
 
       if (lastMonthData.isNotEmpty) {
@@ -130,8 +134,6 @@ class Month {
         newMonthData['planned_income'] = lastMonth['planned_income'];
         newMonthData['planned_expense'] = lastMonth['planned_expense'];
         newMonthData['planned_balance'] = lastMonth['planned_balance'];
-        newMonthData['total_planned_expenses'] =
-            lastMonth['total_planned_expenses'];
       }
 
       final newMonthId = await db.insert('months', newMonthData);

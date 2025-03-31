@@ -2,7 +2,7 @@ import '../services/database_service.dart';
 import 'option.dart';
 
 class Category {
-  final int? id;
+  int? id;
   final int monthId;
   final String name;
   List<Option> options = [];
@@ -32,6 +32,7 @@ class Category {
           options.fold(0.0, (sum, option) => sum + option.actualCost);
     }
   }
+
   Future<List<Option>> loadOptionsList() async {
     if (id != null) {
       options = await Option.getByCategoryId(id!);
@@ -42,13 +43,14 @@ class Category {
     }
     return options;
   }
+
   static Future<List<Category>> getByMonthId(int monthId) async {
     final data = await DatabaseService.instance.queryAllRows('categories');
     List<Category> list = data
         .where((map) => map['month_id'] == monthId)
         .map((map) => Category.fromMap(map))
         .toList();
-    for(var item in list){
+    for (var item in list) {
       item.loadOptions();
     }
     return list;
@@ -61,16 +63,18 @@ class Category {
       return await DatabaseService.instance.update('categories', toMap(), id!);
     }
   }
-  static Future<Category?> getById(int categoryId) async{
+
+  static Future<Category?> getById(int categoryId) async {
     final data = await DatabaseService.instance.queryAllRows('categories');
-    final categoryData = data.firstWhere((map) => map['id'] == categoryId,
-        orElse: () => {});
-    if(categoryData.isNotEmpty){
+    final categoryData =
+        data.firstWhere((map) => map['id'] == categoryId, orElse: () => {});
+    if (categoryData.isNotEmpty) {
       final category = Category.fromMap(categoryData);
       await category.loadOptions();
       return category;
     }
   }
+
   Future<int?> getCategoryId() async {
     final db = await DatabaseService.instance.database;
     final result = await db.query(

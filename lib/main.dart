@@ -8,6 +8,7 @@ import 'package:budget_manager/pages/month_page/month_page.dart';
 import 'package:budget_manager/pages/month_template/new_month_budget_update_page.dart';
 import 'package:budget_manager/pages/month_template/new_month_category_page.dart';
 import 'package:budget_manager/pages/month_template/new_month_options_page.dart';
+import 'package:budget_manager/pages/month_template/new_month_summary_page.dart';
 import 'package:budget_manager/pages/receipt_scanner_page/ReceiptScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: GoRouter(
         initialLocation: isNewMonthExist ? '/new_month' : '/new_month',
         routes: [
@@ -84,7 +86,12 @@ class MyApp extends StatelessWidget {
           GoRoute(
               path: '/new_options',
               builder: (context, state) =>
-                  NewMonthOptionsPage(currentMonthId: currentMonthId))
+                  NewMonthOptionsPage(currentMonthId: currentMonthId)),
+          GoRoute(
+              path: '/new_summary',
+              builder: (context, state) => NewMonthSummaryPage(
+                    currentMonthId: currentMonthId,
+                  ))
           //GoRoute(path: '/stats', builder: (context,state)=>Stats()),
         ],
       ),

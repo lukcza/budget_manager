@@ -20,6 +20,7 @@ class _NewMonthOptionsPageState extends State<NewMonthOptionsPage> {
   int categoriesListIndex = 0;
   final optionsNameController = TextEditingController();
   final costController = TextEditingController();
+  final costActualController = TextEditingController();
 
   @override
   void initState() {
@@ -48,7 +49,7 @@ class _NewMonthOptionsPageState extends State<NewMonthOptionsPage> {
       categoryId: categoryId,
       name: optionsNameController.text,
       plannedCost: double.parse(costController.text),
-      actualCost: 0,
+      actualCost: double.parse(costActualController.text),
     );
     await option.save();
     await _loadOptions();
@@ -135,7 +136,7 @@ class _NewMonthOptionsPageState extends State<NewMonthOptionsPage> {
                                       ),
                                     ),
                                     TextField(
-                                      controller: costController,
+                                      controller: costActualController,
                                       decoration: InputDecoration(
                                         label: Text("Aktualny koszt"),
                                         hintText: "0",
@@ -147,7 +148,7 @@ class _NewMonthOptionsPageState extends State<NewMonthOptionsPage> {
                                   TextButton(
                                     onPressed: () async {
                                       await _addOption(snapshot
-                                          .data![categoriesListIndex].monthId);
+                                          .data![categoriesListIndex].id!);
                                       Navigator.pop(context);
                                     },
                                     child: Text("Dodaj"),
@@ -177,7 +178,7 @@ class _NewMonthOptionsPageState extends State<NewMonthOptionsPage> {
                         ),
                         ElevatedButton(
                             onPressed: () {
-                              context.go("/");
+                              context.go("/new_summary");
                             },
                             child: Text(
                               "zapisz",
