@@ -58,15 +58,19 @@ class Month {
   Future<void> loadCategories() async {
     if (id != null) {
       categories = await Category.getByMonthId(id!);
+      print(categories);
     }
   }
 
   Future<void> updateVariables() async {
-    await loadCategories();
-    plannedExpense = categories.fold(
-        0.0, (sum, category) => sum + category.totalPlannedCost);
-    actualExpense =
-        categories.fold(0.0, (sum, category) => sum + category.totalActualCost);
+    plannedExpense = 0;
+    actualExpense = 0;
+    plannedBalance = 0;
+    actualBalance = 0;
+    for (var item in categories) {
+      plannedExpense += item.totalPlannedCost;
+      actualExpense += item.totalActualCost;
+    }
     plannedBalance = plannedIncome - plannedExpense;
     actualBalance = plannedIncome + actualIncome - actualExpense;
   }
@@ -88,6 +92,40 @@ class Month {
     if (monthData.isNotEmpty) {
       final month = Month.fromMap(monthData);
       await month.loadCategories();
+      return month;
+    }
+    return null;
+  }
+
+  static Future<Month?> getMonthSummary(int monthId) async {
+    final data = await DatabaseService.instance.queryAllRows('months');
+    final monthData =
+        data.firstWhere((map) => map['id'] == monthId, orElse: () => {});
+    if (monthData.isNotEmpty) {
+      final month = Month.fromMap(monthData);
+      if (month.id != null) {
+        final categoryData =
+            await DatabaseService.instance.queryAllRows('categories');
+        List<Category> list = categoryData
+            .where((map) => map['month_id'] == monthId)
+            .map((map) => Category.fromMap(map))
+            .toList();
+        for (var item in list) {
+          await item.loadOptions();
+        }
+        month.categories = list;
+        month.plannedExpense = 0;
+        month.actualExpense = 0;
+        month.plannedBalance = 0;
+        month.actualBalance = 0;
+        for (var item in month.categories) {
+          month.plannedExpense += item.totalPlannedCost;
+          month.actualExpense += item.totalActualCost;
+        }
+        month.plannedBalance = month.plannedIncome - month.plannedExpense;
+        month.actualBalance =
+            month.plannedIncome + month.actualIncome - month.actualExpense;
+      }
       return month;
     }
     return null;
@@ -162,6 +200,7 @@ class Month {
     }
   }
 }
+
 String getPolishMonthName(String input) {
   Map<String, String> monthNames = {
     "January": "Styczeń",

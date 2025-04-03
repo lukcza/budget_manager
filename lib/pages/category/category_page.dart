@@ -1,21 +1,21 @@
-import 'dart:math';
-
 import 'package:budget_manager/models/option.dart';
-import 'package:budget_manager/services/database_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 class CategoryPage extends StatefulWidget {
   CategoryPage(
       {super.key, required this.categoryTitle, required this.categoryId});
+
   String categoryTitle;
   int categoryId;
+
   @override
   State<CategoryPage> createState() => _CategoryPageState();
 }
 
 class _CategoryPageState extends State<CategoryPage> {
   List<Option> items = [];
+
   void _addItem() {
     TextEditingController nameController = TextEditingController();
     TextEditingController plannedCostController = TextEditingController();
@@ -56,14 +56,17 @@ class _CategoryPageState extends State<CategoryPage> {
             onPressed: () {
               if (nameController.text.isNotEmpty) {
                 setState(() {
-                  items.add(Option(categoryId: widget.categoryId,
-                      name:nameController.text,
-                      plannedCost: double.parse(plannedCostController.value.text.isEmpty
-                          ? '0'
-                          : plannedCostController.value.text),
-                      actualCost: double.parse(actualCostController.value.text.isEmpty
-                          ? '0'
-                          : actualCostController.value.text)));
+                  items.add(Option(
+                      categoryId: widget.categoryId,
+                      name: nameController.text,
+                      plannedCost: double.parse(
+                          plannedCostController.value.text.isEmpty
+                              ? '0'
+                              : plannedCostController.value.text),
+                      actualCost: double.parse(
+                          actualCostController.value.text.isEmpty
+                              ? '0'
+                              : actualCostController.value.text)));
                 });
               }
               Navigator.pop(context);
@@ -78,8 +81,7 @@ class _CategoryPageState extends State<CategoryPage> {
   void _addAllOptions() async {
     await showDialog(
         context: context,
-        builder:(BuildContext context)=>
-            AlertDialog(
+        builder: (BuildContext context) => AlertDialog(
               content: Text("Czy napewno chcesz dodać te opcje?"),
               actions: <Widget>[
                 TextButton(
@@ -141,10 +143,11 @@ class _CategoryPageState extends State<CategoryPage> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   ElevatedButton(
-                      onPressed: (){
+                      onPressed: () {
                         items = [];
                         context.pop();
-                      }, child: Text("wroc")),
+                      },
+                      child: Text("wroc")),
                   ElevatedButton(onPressed: _addItem, child: Text("dodaj")),
                   ElevatedButton(
                       onPressed: () => _addAllOptions(), child: Text("zapisz")),

@@ -22,7 +22,8 @@ class Payment {
       'option_id': optionId,
       'name': name,
       'cost': cost,
-      'created_at': createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
+      'created_at':
+          createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
     };
   }
 
@@ -33,12 +34,13 @@ class Payment {
       optionId: map['option_id'],
       name: map['name'],
       cost: map['cost'],
-      createdAt: map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
+      createdAt:
+          map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
     );
   }
 
   Future<int> save() async {
-    if (this.optionId != null && id == null) {
+    if (id == null) {
       Option.addPayment(this.optionId, this.cost);
       return await DatabaseService.instance.insert('payments', toMap());
     } else if (id == null) {

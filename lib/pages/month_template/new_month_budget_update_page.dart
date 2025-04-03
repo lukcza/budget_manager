@@ -1,5 +1,4 @@
 import 'package:budget_manager/models/month.dart';
-import 'package:budget_manager/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -48,15 +47,15 @@ class _NewMonthBudgetUpdatePageState extends State<NewMonthBudgetUpdatePage> {
                 }
                 currentReadyMonth = snapshot.requireData!;
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0,8,8,150),
+                  padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 150),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: EdgeInsets.fromLTRB(8,8,8,40),
+                        padding: EdgeInsets.fromLTRB(8, 8, 8, 40),
                         alignment: Alignment.topLeft,
                         child: Text(
-                            "Witamy w \n${snapshot.data!.name}",
+                          "Witamy w \n${snapshot.data!.name}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
@@ -67,7 +66,7 @@ class _NewMonthBudgetUpdatePageState extends State<NewMonthBudgetUpdatePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(8.0,8,8,20),
+                            padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 20),
                             child: TextField(
                               controller: nameController,
                               style: TextStyle(
@@ -81,12 +80,11 @@ class _NewMonthBudgetUpdatePageState extends State<NewMonthBudgetUpdatePage> {
                                 ),
                                 labelText: "Miesiąc",
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 2,
-                                    color: Colors.black87,
-                                  )
-                                ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      width: 2,
+                                      color: Colors.black87,
+                                    )),
                               ),
                             ),
                           ),
@@ -98,9 +96,9 @@ class _NewMonthBudgetUpdatePageState extends State<NewMonthBudgetUpdatePage> {
                                 fontWeight: FontWeight.bold,
                               ),
                               controller: plannedIncomeController,
-                              decoration:InputDecoration(
+                              decoration: InputDecoration(
                                 labelStyle: TextStyle(
-                                    fontSize: 19,
+                                  fontSize: 19,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 labelText: "Miesięczny budżet",
@@ -109,11 +107,11 @@ class _NewMonthBudgetUpdatePageState extends State<NewMonthBudgetUpdatePage> {
                                     borderSide: BorderSide(
                                       width: 4,
                                       color: Colors.black87,
-                                    )
-                                ),
+                                    )),
                               ),
                               onChanged: (value) {
-                                currentReadyMonth.plannedIncome = double.parse(value);
+                                currentReadyMonth.plannedIncome =
+                                    double.parse(value);
                               },
                             ),
                           ),
@@ -129,10 +127,12 @@ class _NewMonthBudgetUpdatePageState extends State<NewMonthBudgetUpdatePage> {
               }
             }),
       ),
-      floatingActionButton: FloatingActionButton(child: Icon(Icons.arrow_right_alt),onPressed: () async {
-        await _saveMonthPlannedIncome();
-        context.push('/new_categories');
-      }),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.arrow_right_alt),
+          onPressed: () async {
+            await _saveMonthPlannedIncome();
+            context.push('/new_categories');
+          }),
     );
   }
 }

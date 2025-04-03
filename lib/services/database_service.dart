@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:intl/intl.dart';
 
 class DatabaseService {
   static final DatabaseService instance = DatabaseService._init();
@@ -77,6 +76,12 @@ class DatabaseService {
 
   Future<List<Map<String, dynamic>>> queryAllRows(String table) async {
     final db = await instance.database;
+    try {
+      final queryTable = await db.query(table);
+    } on Exception catch (e) {
+      print(e);
+      // TODO
+    }
     return await db.query(table);
   }
 

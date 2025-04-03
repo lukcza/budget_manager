@@ -2,8 +2,6 @@ import 'package:budget_manager/models/category.dart';
 import 'package:budget_manager/models/option.dart';
 import 'package:budget_manager/models/payment.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import '../models/month.dart';
 
 class AddPayment extends StatefulWidget {
@@ -11,7 +9,9 @@ class AddPayment extends StatefulWidget {
     super.key,
     required this.currentMonthId,
   });
+
   final currentMonthId;
+
   @override
   State<AddPayment> createState() => _AddPaymentState();
 }
@@ -25,6 +25,7 @@ class _AddPaymentState extends State<AddPayment> {
   Future<Category?>? chosenCategory;
   int? optionId;
   Payment? payment;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

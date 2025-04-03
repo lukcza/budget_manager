@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_document_scanner/google_mlkit_document_scanner.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as img;
+
 class ReceiptScanner extends StatefulWidget {
   const ReceiptScanner({super.key});
 
@@ -13,8 +12,9 @@ class ReceiptScanner extends StatefulWidget {
 
 class _ReceiptScannerState extends State<ReceiptScanner> {
   String recognizedText = 'Zrób zdjęcie paragonu! 📸';
+
   //TODO dopracować ocr dzieli na bloki co oddziela sume od kwoty
- /* Future<String?> extractTotalFromReceipt() async {
+  /* Future<String?> extractTotalFromReceipt() async {
     final DocumentScannerOptions options = DocumentScannerOptions(
       autoCapture: true,
       detectorMode: DetectorMode.dynamic,
@@ -50,7 +50,7 @@ class _ReceiptScannerState extends State<ReceiptScanner> {
     return totalAmount;
   }
 */
-  
+
   String extractTotalAmount(String text) {
     List<String> lines = text.split('\n');
 
@@ -82,7 +82,8 @@ class _ReceiptScannerState extends State<ReceiptScanner> {
   }
 
   Future<void> pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile == null) return;
 
@@ -92,7 +93,8 @@ class _ReceiptScannerState extends State<ReceiptScanner> {
 
     final inputImage = InputImage.fromFilePath(imageFile.path);
     final textRecognizer = TextRecognizer();
-    final RecognizedText recognized = await textRecognizer.processImage(inputImage);
+    final RecognizedText recognized =
+        await textRecognizer.processImage(inputImage);
 
     print(recognized.text);
     setState(() {
@@ -101,7 +103,8 @@ class _ReceiptScannerState extends State<ReceiptScanner> {
 
     textRecognizer.close();
   }
- /* Future<File> preprocessImage(File file) async {
+
+  /* Future<File> preprocessImage(File file) async {
     final img.Image? image = img.decodeImage(file.readAsBytesSync());
 
     if (image == null) return file;

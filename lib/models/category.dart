@@ -51,7 +51,7 @@ class Category {
         .map((map) => Category.fromMap(map))
         .toList();
     for (var item in list) {
-      item.loadOptions();
+      await item.loadOptions();
     }
     return list;
   }
@@ -73,6 +73,7 @@ class Category {
       await category.loadOptions();
       return category;
     }
+    return null;
   }
 
   Future<int?> getCategoryId() async {

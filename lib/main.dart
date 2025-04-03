@@ -3,7 +3,6 @@ import 'package:budget_manager/pages/add_payment.dart';
 import 'package:budget_manager/pages/category/add_category_page.dart';
 import 'package:budget_manager/pages/category/category_page.dart';
 import 'package:budget_manager/pages/home/home_page_new.dart';
-import 'package:budget_manager/pages/home_page.dart';
 import 'package:budget_manager/pages/month_page/month_page.dart';
 import 'package:budget_manager/pages/month_template/new_month_budget_update_page.dart';
 import 'package:budget_manager/pages/month_template/new_month_category_page.dart';
@@ -12,7 +11,6 @@ import 'package:budget_manager/pages/month_template/new_month_summary_page.dart'
 import 'package:budget_manager/pages/receipt_scanner_page/ReceiptScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'services/database_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
