@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: GoRouter(
-        initialLocation: isNewMonthExist ? '/new_month' : '/new_month',
+        initialLocation: isNewMonthExist ? '/new_month' : '/',
         routes: [
           GoRoute(
               path: '/',
