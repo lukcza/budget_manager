@@ -62,6 +62,19 @@ class Month {
     }
   }
 
+  Future<void> updateVariables() async {
+    plannedExpense = 0;
+    actualExpense = 0;
+    plannedBalance = 0;
+    actualBalance = 0;
+    for (var item in categories) {
+      plannedExpense += item.totalPlannedCost;
+      actualExpense += item.totalActualCost;
+    }
+    plannedBalance = plannedIncome - plannedExpense;
+    actualBalance = plannedIncome + actualIncome - actualExpense;
+  }
+
   static Future<List<Month>> getAll() async {
     final data = await DatabaseService.instance.queryAllRows('months');
     return data.map((map) => Month.fromMap(map)).toList();

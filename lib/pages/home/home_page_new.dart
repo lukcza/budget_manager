@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../models/month.dart';
 import '../../models/option.dart';
 import '../../models/payment.dart';
+import 'home_category_view.dart';
 import 'home_payments_view.dart';
 
 class HomePageNew extends StatefulWidget {
@@ -78,7 +79,7 @@ class _HomePageNewState extends State<HomePageNew> {
                       return HomeBudgetView(
                           currentMonthId: widget.currentMonthId);
                     case 1:
-                      return const Center(child: Text('Wybrano opcję 1'));
+                      return HomeCategoryView(currentMonthId: widget.currentMonthId);
                     case 2:
                       return HomePaymentsView(
                           currentMonth: widget.currentMonthId);
