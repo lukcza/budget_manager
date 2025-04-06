@@ -45,9 +45,11 @@ class MyApp extends StatelessWidget {
                   )),
           GoRoute(
               path: '/add_category',
-              builder: (context, state) => AddCategoryPage(
-                    currentMonthId: this.currentMonthId,
-                  )),
+              builder: (context, state) {
+                return AddCategoryPage(
+                  currentMonthId: this.currentMonthId,
+                );
+              }),
           GoRoute(
               path: '/add_option/:categoryId/:categoryName',
               builder: (context, state) {
@@ -61,9 +63,11 @@ class MyApp extends StatelessWidget {
               }),
           GoRoute(
               path: '/add_payment',
-              builder: (context, state) => AddPayment(
-                    currentMonthId: currentMonthId,
-                  )),
+              builder: (context, state) {
+                return AddPayment(
+                  currentMonthId: currentMonthId,
+                );
+              }),
           GoRoute(
               path: '/month_page',
               builder: (context, state) => MonthPage(

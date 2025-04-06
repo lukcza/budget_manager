@@ -1,6 +1,9 @@
+import 'package:budget_manager/models/enum/page_index.dart';
+import 'package:budget_manager/widgets/custom_nav_bar.dart';
 import 'package:budget_manager/widgets/list_item_category_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_manager/models/month.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../models/category.dart';
 
@@ -17,13 +20,13 @@ class _MonthPageState extends State<MonthPage> {
   int? expandedIndex;
   int? menuIndex;
   late Future<Month?> currentMonth = Month.getById(widget.currentMonthId);
-
+  PageIndex? pageIndex;
   @override
   void initState() {
     //currentMonth = Month.getById(widget.currentMonthId);
     super.initState();
+    pageIndex = PageIndex.month;
   }
-
   void removeItem(int index, List<Category> categoriesList) {
     final removedItem = categoriesList[index];
     categoriesList.removeAt(index);
@@ -222,50 +225,7 @@ class _MonthPageState extends State<MonthPage> {
               );
             }
           }),
+      bottomNavigationBar:CustomNavBar(index: pageIndex!),
     );
   }
-/*Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: [
-        FutureBuilder(
-            future: currentMonth,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Błąd: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return Text('Brak danych');
-              } else {
-                return Expanded(
-                  child: AnimatedList(
-                      key: categoryListKey,
-                      initialItemCount: snapshot.data!.categories.length,
-                      itemBuilder: (context, index, animation) =>
-                          ListItemCategoryWidget(
-                              category: snapshot.data!.categories[index],
-                              animation: animation,
-                              onPressedRemove: () =>
-                                  removeItem(index, snapshot.data!.categories),
-                              onPressedEdit: () => print("yes"))),
-                );
-              }
-            }),
-        Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                ElevatedButton(
-                    onPressed: () => context.go('/category'),
-                    child: Text("dodaj")),
-                ElevatedButton(
-                    onPressed: () => context.go('/'), child: Text("wróć")),
-              ],
-            ))
-      ],
-    ));
-  }*/
 }

@@ -1,7 +1,11 @@
 import 'dart:io';
+import 'package:budget_manager/widgets/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../models/enum/page_index.dart';
 
 class ReceiptScanner extends StatefulWidget {
   const ReceiptScanner({super.key});
@@ -12,45 +16,14 @@ class ReceiptScanner extends StatefulWidget {
 
 class _ReceiptScannerState extends State<ReceiptScanner> {
   String recognizedText = 'Zrób zdjęcie paragonu! 📸';
-
+  PageIndex? pageIndex;
   //TODO dopracować ocr dzieli na bloki co oddziela sume od kwoty
-  /* Future<String?> extractTotalFromReceipt() async {
-    final DocumentScannerOptions options = DocumentScannerOptions(
-      autoCapture: true,
-      detectorMode: DetectorMode.dynamic,
-    );
-
-    final documentScanner = DocumentScanner(options: options);
-    final DocumentScannerResult result = await documentScanner.start();
-    await documentScanner.close();
-
-    if (result.status != DocumentScannerStatus.success || result.croppedImagePaths.isEmpty) {
-      return null;
-    }
-
-    final String scannedImagePath = result.croppedImagePaths.first;
-    final InputImage inputImage = InputImage.fromFilePath(scannedImagePath);
-    final textRecognizer = TextRecognizer();
-
-    final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
-    await textRecognizer.close();
-
-    String? totalAmount;
-
-    for (TextBlock block in recognizedText.blocks) {
-      for (TextLine line in block.lines) {
-        if (line.text.toLowerCase().contains("suma") || line.text.toLowerCase().contains("total")) {
-          totalAmount = line.text.replaceAll(RegExp(r'[^0-9,\.]'), '');
-          break;
-        }
-      }
-      if (totalAmount != null) break;
-    }
-
-    return totalAmount;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pageIndex = PageIndex.receiptPhoto;
   }
-*/
-
   String extractTotalAmount(String text) {
     List<String> lines = text.split('\n');
 
@@ -104,21 +77,6 @@ class _ReceiptScannerState extends State<ReceiptScanner> {
     textRecognizer.close();
   }
 
-  /* Future<File> preprocessImage(File file) async {
-    final img.Image? image = img.decodeImage(file.readAsBytesSync());
-
-    if (image == null) return file;
-
-    final img.Image grayImage = img.grayscale(image);
-
-    final img.Image contrastImage = img.adjustColor(grayImage, contrast: 1.5);
-
-    final File processedFile = File(file.path)
-      ..writeAsBytesSync(img.encodeJpg(contrastImage));
-
-    return processedFile;
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,6 +98,7 @@ class _ReceiptScannerState extends State<ReceiptScanner> {
           ],
         ),
       ),
+      bottomNavigationBar: CustomNavBar(index: pageIndex!),
     );
   }
 }

@@ -1,6 +1,9 @@
 import 'package:budget_manager/models/category.dart';
+import 'package:budget_manager/models/enum/page_index.dart';
 import 'package:budget_manager/pages/home/home_budget_view.dart';
+import 'package:budget_manager/widgets/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../models/month.dart';
 import '../../models/option.dart';
@@ -16,7 +19,6 @@ class HomePageNew extends StatefulWidget {
   @override
   State<HomePageNew> createState() => _HomePageNewState();
 }
-
 class _HomePageNewState extends State<HomePageNew> {
   List<DropdownMenuEntry<int>> listOfPaymentsTimeRange = const [
     DropdownMenuEntry(value: 0, label: "Ostatnie"),
@@ -29,7 +31,13 @@ class _HomePageNewState extends State<HomePageNew> {
   Category? category;
   Option? option;
   Payment? payment;
-
+  PageIndex? pageIndex;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pageIndex = PageIndex.home;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,22 +101,7 @@ class _HomePageNewState extends State<HomePageNew> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.amber.shade600,
-          unselectedItemColor: Colors.grey.shade600,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "start"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today), label: "Miesiąc"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.edit_calendar), label: "Dodaj Kategorie"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.add_circle_outline), label: "Dodaj opcje"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.payments_outlined), label: "Dodaj płatność"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.camera_alt_outlined), label: "Paragon"),
-          ]),
+      bottomNavigationBar: CustomNavBar(index: pageIndex!)
     );
   }
 }

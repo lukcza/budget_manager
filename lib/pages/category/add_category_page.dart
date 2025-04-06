@@ -1,4 +1,6 @@
 import 'package:budget_manager/models/category.dart';
+import 'package:budget_manager/models/enum/page_index.dart';
+import 'package:budget_manager/widgets/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/database_service.dart';
@@ -16,13 +18,15 @@ class AddCategoryPage extends StatefulWidget {
 class _AddCategoryPageState extends State<AddCategoryPage> {
   final titleController = TextEditingController();
   String? monthName;
+  //int pageIndex;
+  PageIndex? pageIndex;
   @override
   void initState() {
     _loadMonthName();
     // TODO: implement initState
     super.initState();
+    pageIndex = PageIndex.categoryAdd;
   }
-
   Future<void> _loadMonthName() async {
     String? name =
         await DatabaseService.instance.getMonthNameById(widget.currentMonthId);
@@ -67,6 +71,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
           ),
         ),
       ),
+      bottomNavigationBar:CustomNavBar(index: pageIndex!),
     );
   }
 }

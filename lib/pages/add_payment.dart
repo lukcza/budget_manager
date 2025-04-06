@@ -1,7 +1,10 @@
 import 'package:budget_manager/models/category.dart';
+import 'package:budget_manager/models/enum/page_index.dart';
 import 'package:budget_manager/models/option.dart';
 import 'package:budget_manager/models/payment.dart';
+import 'package:budget_manager/widgets/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../models/month.dart';
 
 class AddPayment extends StatefulWidget {
@@ -25,7 +28,13 @@ class _AddPaymentState extends State<AddPayment> {
   Future<Category?>? chosenCategory;
   int? optionId;
   Payment? payment;
-
+  PageIndex? pageIndex;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pageIndex = PageIndex.paymentAdd;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,6 +124,7 @@ class _AddPaymentState extends State<AddPayment> {
           ],
         ),
       ),
+      bottomNavigationBar: CustomNavBar(index: pageIndex!),
     );
   }
 }
