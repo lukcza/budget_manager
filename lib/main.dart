@@ -39,62 +39,98 @@ class MyApp extends StatelessWidget {
         initialLocation: isNewMonthExist ? '/new_month' : '/',
         routes: [
           GoRoute(
-              path: '/',
-              builder: (context, state) => HomePageNew(
-                    currentMonthId: this.currentMonthId,
-                  )),
+            path: '/',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: HomePageNew(
+                currentMonthId: this.currentMonthId,
+              ),
+            ),
+          ),
           GoRoute(
-              path: '/add_category',
-              builder: (context, state) {
-                return AddCategoryPage(
-                  currentMonthId: this.currentMonthId,
-                );
-              }),
+            path: '/add_category',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: AddCategoryPage(
+                currentMonthId: this.currentMonthId,
+              ),
+            ),
+          ),
           GoRoute(
-              path: '/add_option/:categoryId/:categoryName',
-              builder: (context, state) {
-                final categoryTitle = state.pathParameters['categoryName'];
-                final categoryId =
-                    int.parse(state.pathParameters['categoryId']!);
-                return CategoryPage(
+            path: '/add_option/:categoryId/:categoryName',
+            pageBuilder: (context, state) {
+              final categoryTitle = state.pathParameters['categoryName'];
+              final categoryId = int.parse(state.pathParameters['categoryId']!);
+              return NoTransitionPage(
+                key: state.pageKey,
+                child: CategoryPage(
                   categoryTitle: categoryTitle!,
                   categoryId: categoryId,
-                );
-              }),
+                ),
+              );
+            },
+          ),
           GoRoute(
-              path: '/add_payment',
-              builder: (context, state) {
-                return AddPayment(
-                  currentMonthId: currentMonthId,
-                );
-              }),
+            path: '/add_payment',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: AddPayment(
+                currentMonthId: currentMonthId,
+              ),
+            ),
+          ),
           GoRoute(
-              path: '/month_page',
-              builder: (context, state) => MonthPage(
-                    currentMonthId: currentMonthId,
-                  )),
+            path: '/month_page',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: MonthPage(
+                currentMonthId: currentMonthId,
+              ),
+            ),
+          ),
           GoRoute(
-              path: '/receipt_scanner',
-              builder: (context, state) => ReceiptScanner()),
+            path: '/receipt_scanner',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: ReceiptScanner(),
+            ),
+          ),
           GoRoute(
-              path: '/new_month',
-              builder: (context, state) => NewMonthBudgetUpdatePage(
-                    currentMonthId: currentMonthId,
-                  )),
+            path: '/new_month',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: NewMonthBudgetUpdatePage(
+                currentMonthId: currentMonthId,
+              ),
+            ),
+          ),
           GoRoute(
-              path: '/new_categories',
-              builder: (context, state) =>
-                  NewMonthCategoryPage(currentMonthId: currentMonthId)),
+            path: '/new_categories',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: NewMonthCategoryPage(
+                currentMonthId: currentMonthId,
+              ),
+            ),
+          ),
           GoRoute(
-              path: '/new_options',
-              builder: (context, state) =>
-                  NewMonthOptionsPage(currentMonthId: currentMonthId)),
+            path: '/new_options',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: NewMonthOptionsPage(
+                currentMonthId: currentMonthId,
+              ),
+            ),
+          ),
           GoRoute(
-              path: '/new_summary',
-              builder: (context, state) => NewMonthSummaryPage(
-                    currentMonthId: currentMonthId,
-                  ))
-          //GoRoute(path: '/stats', builder: (context,state)=>Stats()),
+            path: '/new_summary',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: NewMonthSummaryPage(
+                currentMonthId: currentMonthId,
+              ),
+            ),
+          ),
         ],
       ),
     );
