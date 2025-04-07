@@ -56,7 +56,28 @@ class Option {
 
   static Future addPayment(int optionId, double amount) async {
     final db = await DatabaseService.instance.database;
-    db.update('options', {'actual_cost': amount},
-        where: ' id=? ', whereArgs: [optionId]);
+
+    // Pobierz aktualną wartość actual_cost
+    final List<Map<String, dynamic>> result = await db.query(
+      'options',
+      columns: ['actual_cost'],
+      where: 'id = ?',
+      whereArgs: [optionId],
+    );
+
+    if (result.isNotEmpty) {
+      final currentAmount = result.first['actual_cost'] as double;
+      final newAmount = currentAmount + amount;
+
+      // Zaktualizuj wartość
+      await db.update(
+        'options',
+        {'actual_cost': newAmount},
+        where: 'id = ?',
+        whereArgs: [optionId],
+      );
+    } else {
+      throw Exception('Option with id $optionId not found');
+    }
   }
 }
