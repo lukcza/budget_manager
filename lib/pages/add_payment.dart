@@ -29,12 +29,14 @@ class _AddPaymentState extends State<AddPayment> {
   int? optionId;
   Payment? payment;
   PageIndex? pageIndex;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     pageIndex = PageIndex.paymentAdd;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +57,20 @@ class _AddPaymentState extends State<AddPayment> {
                         child: Column(
                       children: [
                         DropdownMenu(
+                          /*menuStyle: MenuStyle(
+                            backgroundColor:
+                                WidgetStateProperty.all(Colors.grey[900]),
+                            elevation: WidgetStateProperty.all(6),
+                            padding: WidgetStateProperty.all(
+                                EdgeInsets.symmetric(vertical: 8)),
+                            shape: WidgetStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            fixedSize:
+                                WidgetStateProperty.all(const Size(200, 0)),
+                          ),*/
                           dropdownMenuEntries: snapshot.data!.categories
                               .map((category) => DropdownMenuEntry(
                                   value: category.id, label: category.name))
