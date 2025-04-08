@@ -117,7 +117,6 @@ class _AddPaymentState extends State<AddPayment> {
                       (double.parse(amountController.text) != 0)) {
                     await Option.addPayment(
                         optionId!, double.parse(amountController.text));
-
                     payment = Payment(
                         optionId: optionId!,
                         name: nameController.value.text,

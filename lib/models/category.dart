@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import '../services/database_service.dart';
 import 'option.dart';
 
@@ -92,5 +94,60 @@ class Category {
 
   static Future<int> delete(int id) async {
     return await DatabaseService.instance.delete('categories', id);
+  }
+
+  static Future insertCategoriesOfTemplate(int monthId) async {
+    Category zywnoscCategory = Category(monthId: monthId, name: "Żywność");
+    Category utrzymanieDomuCategory =
+        Category(monthId: monthId, name: "Utrzymanie domu");
+    Category transportCategory = Category(monthId: monthId, name: "Transport");
+    Category rozrywkaCategory = Category(monthId: monthId, name: "Rozrywka");
+    Category inneCategory = Category(monthId: monthId, name: "inne");
+    zywnoscCategory.options = [
+      Option(categoryId: zywnoscCategory.id!, name: "Obiad"),
+      Option(categoryId: zywnoscCategory.id!, name: "Kolacja"),
+      Option(categoryId: zywnoscCategory.id!, name: "Śniadanie"),
+      Option(categoryId: zywnoscCategory.id!, name: "Deser"),
+      Option(categoryId: zywnoscCategory.id!, name: "Napoje"),
+      Option(categoryId: zywnoscCategory.id!, name: "Inne"),
+    ];
+    utrzymanieDomuCategory.options = [
+      Option(categoryId: utrzymanieDomuCategory.id!, name: "Czynsz"),
+      Option(categoryId: utrzymanieDomuCategory.id!, name: "Prąd"),
+      Option(categoryId: utrzymanieDomuCategory.id!, name: "Internet"),
+      Option(categoryId: utrzymanieDomuCategory.id!, name: "Woda"),
+      Option(categoryId: utrzymanieDomuCategory.id!, name: "Gaz"),
+      Option(
+          categoryId: utrzymanieDomuCategory.id!, name: "Artykuły czystości"),
+      Option(categoryId: utrzymanieDomuCategory.id!, name: "Inne"),
+    ];
+
+    transportCategory.options = [
+      Option(categoryId: transportCategory.id!, name: "Paliwo"),
+      Option(categoryId: transportCategory.id!, name: "Ubezpieczenie"),
+      Option(categoryId: transportCategory.id!, name: "Komunikacja miejska"),
+      Option(categoryId: transportCategory.id!, name: "Inne"),
+    ];
+    rozrywkaCategory.options = [
+      Option(categoryId: rozrywkaCategory.id!, name: "Subskrypcje media"),
+      Option(categoryId: rozrywkaCategory.id!, name: "Imprezy"),
+      Option(categoryId: rozrywkaCategory.id!, name: "Inne"),
+    ];
+    inneCategory.options = [
+      Option(categoryId: inneCategory.id!, name: "Inne"),
+    ];
+    List<Category> listOfCategory = [
+      utrzymanieDomuCategory,
+      transportCategory,
+      rozrywkaCategory,
+      zywnoscCategory,
+      inneCategory
+    ];
+    for (var item in listOfCategory) {
+      for (var item in item.options) {
+        item.save();
+      }
+      await item.save();
+    }
   }
 }

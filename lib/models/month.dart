@@ -199,6 +199,20 @@ class Month {
       };
     }
   }
+  static Future<Month?> loadMonthTemplate(int monthId) async{
+    final data = await DatabaseService.instance.queryAllRows('months');
+    final monthData =
+    data.firstWhere((map) => map['id'] == monthId, orElse: () => {});
+    if (monthData.isNotEmpty) {
+      final month = Month.fromMap(monthData);
+      await month.loadCategories();
+      while(month.categories.isEmpty){
+        await Category.insertCategoriesOfTemplate(monthId);
+        await month.loadCategories();
+      }
+      return month;
+    }
+  }
 }
 
 String getPolishMonthName(String input) {
@@ -226,4 +240,5 @@ String getPolishMonthName(String input) {
   } catch (e) {
     return input;
   }
+
 }
