@@ -131,6 +131,7 @@ class _NewMonthBudgetUpdatePageState extends State<NewMonthBudgetUpdatePage> {
           child: Icon(Icons.arrow_right_alt),
           onPressed: () async {
             await _saveMonthPlannedIncome();
+            await Month.loadMonthTemplate(widget.currentMonthId);
             context.push('/new_categories');
           }),
     );

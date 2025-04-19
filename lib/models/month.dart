@@ -212,6 +212,7 @@ class Month {
       }
       return month;
     }
+    return null;
   }
 }
 

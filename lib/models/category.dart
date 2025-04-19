@@ -65,7 +65,11 @@ class Category {
       return await DatabaseService.instance.update('categories', toMap(), id!);
     }
   }
-
+  static Future<Category> getCurrentMonthCategoryByName(String name, int monthId) async {
+    List<Category> listOfCategories =  await Category.getByMonthId(monthId);
+    Category matchingCategory = listOfCategories.firstWhere((category)=> category.name == name);
+    return matchingCategory;
+  }
   static Future<Category?> getById(int categoryId) async {
     final data = await DatabaseService.instance.queryAllRows('categories');
     final categoryData =
@@ -102,7 +106,24 @@ class Category {
         Category(monthId: monthId, name: "Utrzymanie domu");
     Category transportCategory = Category(monthId: monthId, name: "Transport");
     Category rozrywkaCategory = Category(monthId: monthId, name: "Rozrywka");
-    Category inneCategory = Category(monthId: monthId, name: "inne");
+    Category inneCategory = Category(monthId: monthId, name: "Inne");
+    List<Category> listOfCategory = [
+      zywnoscCategory,
+      utrzymanieDomuCategory,
+      transportCategory,
+      rozrywkaCategory,
+      inneCategory,
+    ];
+
+    // Najpierw zapisz kategorie, żeby mieć ich ID
+    for (var category in listOfCategory) {
+      await category.save();
+    }
+    zywnoscCategory = await Category.getCurrentMonthCategoryByName(zywnoscCategory.name, monthId);
+    utrzymanieDomuCategory = await Category.getCurrentMonthCategoryByName(utrzymanieDomuCategory.name, monthId);
+    transportCategory = await Category.getCurrentMonthCategoryByName(transportCategory.name, monthId);
+    rozrywkaCategory = await Category.getCurrentMonthCategoryByName(rozrywkaCategory.name, monthId);
+    inneCategory = await Category.getCurrentMonthCategoryByName(inneCategory.name, monthId);
     zywnoscCategory.options = [
       Option(categoryId: zywnoscCategory.id!, name: "Obiad"),
       Option(categoryId: zywnoscCategory.id!, name: "Kolacja"),
@@ -121,7 +142,6 @@ class Category {
           categoryId: utrzymanieDomuCategory.id!, name: "Artykuły czystości"),
       Option(categoryId: utrzymanieDomuCategory.id!, name: "Inne"),
     ];
-
     transportCategory.options = [
       Option(categoryId: transportCategory.id!, name: "Paliwo"),
       Option(categoryId: transportCategory.id!, name: "Ubezpieczenie"),
@@ -136,16 +156,16 @@ class Category {
     inneCategory.options = [
       Option(categoryId: inneCategory.id!, name: "Inne"),
     ];
-    List<Category> listOfCategory = [
+    List<Category> listToSave = [
+      zywnoscCategory,
       utrzymanieDomuCategory,
       transportCategory,
       rozrywkaCategory,
-      zywnoscCategory,
-      inneCategory
+      inneCategory,
     ];
-    for (var item in listOfCategory) {
+    for (var item in listToSave) {
       for (var item in item.options) {
-        item.save();
+        await item.save();
       }
       await item.save();
     }
